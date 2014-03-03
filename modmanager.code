@@ -9,18 +9,27 @@ iPush_3
 StackSet 5
 iPush_0
 StackSet 6
+iPush_0
+StackSet 7
+iPush_0
+StackSet 8
+iPush_0
+StackSet 9
 
 
 :while
 iPush_0
 CallNative wait 1 0
+Call @Label_catch_load_button_press
 
 :Label_main1
 StackGet 6
 JumpFalse @Label_main2
 Call @Label_draw_window
 Call @Label_draw_menu
-Call @Label_catch_button_press
+Call @Label_catch_updown_button_press
+Call @Label_catch_select_button_press
+Call @Label_action
 Jump @Label_main3
 
 :Label_main3
@@ -28,6 +37,222 @@ Jump @Label_main2
 
 :Label_main2
 Jump @while
+Return 0 0
+
+:Label_action
+Function 12 0 2
+StackGet 7
+iPush_2
+JumpEq @Label_action1
+Jump @Label_action2
+
+:Label_action1
+iPush_0
+StackSet 7
+StackGet 4
+Call @Label_load_script
+StackGet 9
+iPush_0
+JumpEq @Label_action3
+iPush_0
+StackSet 6
+Jump @Label_action2
+
+:Label_action3
+Jump @Label_action2
+
+:Label_action2
+Return 0 0
+
+:Label_load_script
+Function 14 1 7
+PushS 1024
+setF 5
+getF 0
+Switch [0 @Label_load_script_1]:[1 @Label_load_script_2]:[3 @Label_load_script_3]:[2 @Label_load_script_4]:[4 @Label_load_script_5]
+Jump @Label_load_script_6
+
+:Label_load_script_1
+PushString "mod_script_1"
+setF 3
+Push 1846447790
+setF 4
+Jump @Label_load_script_6
+
+:Label_load_script_2
+PushString "mod_script_2"
+setF 3
+Push 2077829699
+setF 4
+Jump @Label_load_script_6
+
+:Label_load_script_3
+PushString "mod_script_3"
+setF 3
+Push -1968420887
+setF 4
+Jump @Label_load_script_6
+
+:Label_load_script_4
+PushString "mod_script_4"
+setF 3
+Push -1744706924
+setF 4
+Jump @Label_load_script_6
+
+:Label_load_script_5
+PushString "mod_script_5"
+setF 3
+Push -1261036480
+setF 4
+Jump @Label_load_script_6
+
+:Label_load_script_6
+getF 3
+CallNative get_length_of_literal_string 1 1
+iPush_0
+JumpEq @Label_load_script_7
+getF 4
+CallNative unk_0x029D3841 1 1
+iPush_0
+JumpNE @Label_load_script_7
+getF 3
+CallNative request_script 1 0
+
+:Label_load_script_9
+getF 3
+CallNative has_script_loaded 1 1
+Not
+JumpFalse @Label_load_script_8
+iPush_0
+CallNative wait 1 0
+Jump @Label_load_script_9
+
+:Label_load_script_8
+getF 3
+getF 5
+CallNative start_new_script 2 1
+getF 3
+CallNative set_script_as_no_longer_needed 1 0
+iPush_1
+StackSet 9
+
+:Label_load_script_7
+Return 1 0
+
+:Label_catch_select_button_press
+Function 11 0 2
+iPush_0
+CallNative set_cinematic_button_active 1 0
+iPush_0
+Push1 90
+CallNative disable_control_action 2 0
+iPush_0
+Push1 69
+CallNative disable_control_action 2 0
+iPush_0
+Push1 73
+CallNative disable_control_action 2 0
+iPush_2
+Push1 176
+CallNative unk_0x4E8E29E6 2 0
+iPush_2
+Push1 174
+CallNative unk_0x4E8E29E6 2 0
+iPush_2
+Push1 175
+CallNative unk_0x4E8E29E6 2 0
+iPush_2
+Push1 176
+CallNative is_control_just_released 2 1
+JumpFalse @Label_740
+iPush_-1
+PushString "SELECT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+iPush_3
+StackSet 7
+Jump @Label_739
+
+:Label_740
+iPush_2
+Push1 174
+CallNative is_control_just_released 2 1
+JumpFalse @Label_741
+iPush_-1
+PushString "SELECT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+iPush_1
+StackSet 7
+Jump @Label_739
+
+:Label_741
+iPush_2
+Push1 175
+CallNative is_control_just_released 2 1
+JumpFalse @Label_739
+iPush_-1
+PushString "SELECT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+iPush_2
+StackSet 7
+
+:Label_739
+Return 0 0
+
+:Label_catch_load_button_press
+Function 8 0 3
+StackGet 8
+Push1 40
+JumpGT @Label_catch_load3
+Jump @Label_catch_load4
+
+:Label_catch_load3
+StackGet 6
+JumpFalse @Label_catch_load2
+iPush_0
+StackSet 8
+iPush_0
+StackSet 6
+iPush_-1
+PushString "SELECT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+Jump @Label_catch_load4
+
+:Label_catch_load2
+iPush_0
+StackSet 8
+iPush_1
+StackSet 6
+iPush_-1
+PushString "SELECT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+Jump @Label_catch_load4
+
+:Label_catch_load4
+Call @Label_8749
+Return 0 0
+
+:Label_8749
+Function 10 0 2
+CallNative is_pause_menu_active 0 1
+JumpFalse @Label_8750
+Jump @Label_8752
+
+:Label_8750
+iPush_2
+Push1 184
+CallNative is_control_pressed 2 1
+JumpFalse @Label_8752
+StackGet 8
+Add1 1
+StackSet 8
+
+:Label_8752
 Return 0 0
 
 :Label_draw_window
@@ -89,10 +314,8 @@ getF 7
 CallNative draw_rect 8 0
 Return 8 0
 
-:Label_catch_button_press
+:Label_catch_updown_button_press
 Function 8 0 6
-iPush_3
-CallNative show_hud_component_this_frame 1 0
 iPush_0
 Push1 46
 CallNative disable_control_action 2 0
@@ -105,8 +328,6 @@ CallNative unk_0x4E8E29E6 2 0
 iPush_2
 Push1 174
 CallNative unk_0x4E8E29E6 2 0
-iPush_2
-Push1 161
 iPush_2
 Push1 161
 CallNative is_control_just_pressed 2 1
@@ -128,7 +349,7 @@ iPush_0
 StackSet 4
 
 :Label_1342
-Jump @Label_catch_button_press_END
+Jump @Label_catch_updown_button_press_END
 
 :Label_else_up
 iPush_2
@@ -153,12 +374,12 @@ StackGet 5
 StackSet 4
 
 :Label_1344
-Jump @Label_catch_button_press_END
+Jump @Label_catch_updown_button_press_END
 
 :Label_1346
-Jump @Label_catch_button_press_END
+Jump @Label_catch_updown_button_press_END
 
-:Label_catch_button_press_END
+:Label_catch_updown_button_press_END
 Return 0 0
 
 :Label_draw_menu
