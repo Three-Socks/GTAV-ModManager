@@ -65,22 +65,30 @@ StackGet 9
 iPush_0
 JumpEq @Label_action3
 iPush_0
-StackSet 6
+StackSet 9
 Jump @Label_action2
 
 :Label_action4
 StackGet 7
 iPush_2
 JumpEq @Label_action5
+Jump @Label_action2
 
 :Label_action5
 iPush_0
 StackSet 7
 iPush_0
 StackSet 6
-Jump @Label_action3
+Jump @Label_action2
 
 :Label_action3
+PushString "STRING"
+CallNative unk_0x574EE85C 1 0
+PushString "ModManager Error:~n~Unable to load script."
+CallNative unk_0x27A244D8 1 0
+iPush_0
+iPush_1
+CallNative unk_0x08F7AF78 2 1
 Jump @Label_action2
 
 :Label_action2
@@ -89,33 +97,31 @@ Return 0 0
 :Label_load_script
 Function 14 1 7
 PushS 1024
-setF 5
-getF 0
-iPush_0
-Call @Label_get_scripts
 setF 3
 getF 0
-iPush_1
-Call @Label_get_scripts
-setF 4
-getF 4
+Call @Label_get_script_hash
 CallNative unk_0x029D3841 1 1
 iPush_0
 JumpNE @Label_load_script_10
-getF 3
+getF 0
+Call @Label_get_scripts
 CallNative does_script_exist 1 1
 JumpFalse @Label_load_script_7
-getF 3
+getF 0
+Call @Label_get_scripts
 CallNative get_length_of_literal_string 1 1
 iPush_0
 JumpEq @Label_load_script_7
-getF 3
+getF 0
+Call @Label_get_scripts
 CallNative terminate_all_scripts_with_this_name 1 0
-getF 3
+getF 0
+Call @Label_get_scripts
 CallNative request_script 1 0
 
 :Label_load_script_9
-getF 3
+getF 0
+Call @Label_get_scripts
 CallNative has_script_loaded 1 1
 Not
 JumpFalse @Label_load_script_8
@@ -124,10 +130,13 @@ CallNative wait 1 0
 Jump @Label_load_script_9
 
 :Label_load_script_8
+getF 0
+Call @Label_get_scripts
 getF 3
-getF 5
 CallNative start_new_script 2 1
-getF 3
+drop
+getF 0
+Call @Label_get_scripts
 CallNative set_script_as_no_longer_needed 1 0
 iPush_1
 StackSet 9
@@ -136,7 +145,8 @@ Call @Label_scripts_toggle
 Jump @Label_load_script_7
 
 :Label_load_script_10
-getF 3
+getF 0
+Call @Label_get_scripts
 CallNative terminate_all_scripts_with_this_name 1 0
 getF 0
 Call @Label_scripts_toggle
@@ -588,71 +598,49 @@ CallNative set_text_edge 5 0
 Return 2 0
 
 :Label_get_scripts
-Function 15 2 5
-
+Function 15 1 3
 getF 0
-Switch [0 @Label_get_scripts_1]:[1 @Label_get_scripts_2]:[3 @Label_get_scripts_3]:[2 @Label_get_scripts_4]:[4 @Label_get_scripts_5]
-Jump @Label_get_scripts_7
-
-:Label_get_scripts_1
-PushString "mod_script_1"
-setF 3
-Push 1846447790
-setF 4
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_2
-PushString "mod_script_2"
-setF 3
-Push 2077829699
-setF 4
-Jump @Label_get_scripts_6
+Switch [0 @Label_get_scripts_3]:[1 @Label_get_scripts_4]
+Jump @Label_get_scripts_5
 
 :Label_get_scripts_3
-PushString "mod_script_3"
-setF 3
-Push -1968420887
-setF 4
-Jump @Label_get_scripts_6
+PushString "mod_script_1"
+Return 1 1
+Jump @Label_get_scripts_5
 
 :Label_get_scripts_4
-PushString "mod_script_4"
-setF 3
-Push -1744706924
-setF 4
-Jump @Label_get_scripts_6
+PushString "mod_script_2"
+Return 1 1
+Jump @Label_get_scripts_5
 
 :Label_get_scripts_5
-PushString "mod_script_5"
-setF 3
-Push -1261036480
-setF 4
-Jump @Label_get_scripts_6
+PushString "{NULLSTRING}"
+Return 1 1
 
-:Label_get_scripts_7
-getF 1
-JumpFalse @Label_get_scripts_8
+:Label_get_script_hash
+Function 18 1 3
+getF 0
+Switch [0 @Label_get_script_hash_3]:[1 @Label_get_script_hash_4]
+Jump @Label_get_script_hash_5
+
+:Label_get_script_hash_3
+Push 1846447790
+Return 1 1
+Jump @Label_get_script_hash_5
+
+:Label_get_script_hash_4
+Push 2077829699
+Return 1 1
+Jump @Label_get_script_hash_5
+
+:Label_get_script_hash_5
 iPush_0
-Return 2 1
-
-:Label_get_scripts_8
-PushString ""
-Return 2 1
-
-:Label_get_scripts_6
-getF 1
-JumpFalse @Label_get_scripts_9
-getF 4
-Return 2 1
-
-:Label_get_scripts_9
-getF 3
-Return 2 1
+Return 1 1
 
 :Label_scripts_enabled
 Function 16 1 5
 getF 0
-Switch [0 @Label_scripts_enabled_1]:[1 @Label_scripts_enabled_2]:[3 @Label_scripts_enabled_3]:[2 @Label_scripts_enabled_4]:[4 @Label_scripts_enabled_5]
+Switch [0 @Label_scripts_enabled_1]:[1 @Label_scripts_enabled_2]:[2 @Label_scripts_enabled_3]:[3 @Label_scripts_enabled_4]:[4 @Label_scripts_enabled_5]
 Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_1
@@ -660,60 +648,50 @@ StackGet 10
 JumpFalse @Label_scripts_enabled_8
 iPush_1
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_8
 iPush_0
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_2
 StackGet 11
 JumpFalse @Label_scripts_enabled_9
 iPush_1
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_9
 iPush_0
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_3
 StackGet 12
 JumpFalse @Label_scripts_enabled_10
 iPush_1
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_10
 iPush_0
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_4
 StackGet 13
 JumpFalse @Label_scripts_enabled_11
 iPush_1
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_11
 iPush_0
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_5
 StackGet 14
 JumpFalse @Label_scripts_enabled_12
 iPush_1
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_12
 iPush_0
 Return 1 1
-Jump @Label_scripts_enabled_6
 
 :Label_scripts_enabled_6
 iPush_0
@@ -722,7 +700,7 @@ Return 1 1
 :Label_scripts_toggle
 Function 17 1 5
 getF 0
-Switch [0 @Label_scripts_toggle_1]:[1 @Label_scripts_toggle_2]:[3 @Label_scripts_toggle_3]:[2 @Label_scripts_toggle_4]:[4 @Label_scripts_toggle_5]
+Switch [0 @Label_scripts_toggle_1]:[1 @Label_scripts_toggle_2]:[2 @Label_scripts_toggle_3]:[3 @Label_scripts_toggle_4]:[4 @Label_scripts_toggle_5]
 Jump @Label_scripts_toggle_6
 
 :Label_scripts_toggle_1
