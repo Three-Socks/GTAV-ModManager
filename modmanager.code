@@ -13,8 +13,6 @@ iPush_0
 StackSet 7
 iPush_0
 StackSet 8
-iPush_0
-StackSet 9
 
 iPush_0
 StackSet 10
@@ -123,18 +121,12 @@ drop
 getF 0
 Call @Label_get_scripts
 CallNative set_script_as_no_longer_needed 1 0
-iPush_1
-StackSet 9
-getF 0
-Call @Label_scripts_toggle
-Jump @Label_load_script_7
+Jump @Label_load_script_11
 
 :Label_load_script_10
 getF 0
 Call @Label_get_scripts
 CallNative terminate_all_scripts_with_this_name 1 0
-getF 0
-Call @Label_scripts_toggle
 Jump @Label_load_script_11
 
 :Label_load_script_7
@@ -145,7 +137,7 @@ CallNative unk_0x27A244D8 1 0
 iPush_0
 iPush_1
 CallNative unk_0x08F7AF78 2 1
-Jump @Label_action11
+Jump @Label_load_script_11
 
 :Label_load_script_11
 Return 1 0
@@ -172,19 +164,6 @@ CallNative unk_0x4E8E29E6 2 0
 iPush_2
 Push1 175
 CallNative unk_0x4E8E29E6 2 0
-iPush_2
-Push1 176
-CallNative is_control_just_released 2 1
-JumpFalse @Label_740
-iPush_-1
-PushString "SELECT"
-PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
-CallNative play_sound_frontend 3 0
-iPush_3
-StackSet 7
-Jump @Label_739
-
-:Label_740
 iPush_2
 Push1 174
 CallNative is_control_just_released 2 1
@@ -398,7 +377,7 @@ Function 5 0 12
 iPush_0
 iPush_0
 Call @Label_set_up_draw
-PushString "ModManager"
+PushString "ModManager - BETA"
 StackGet 3
 fPush 0.04444443
 Call @Label_draw_string
@@ -436,6 +415,8 @@ setF 11
 getF 3
 getF 9
 JumpGE @Label_draw_menu_END
+getF 3
+Call @Label_scripts_running
 getF 5
 getF 8
 fAdd
@@ -825,4 +806,35 @@ StackSet 14
 Jump @Label_scripts_toggle_6
 
 :Label_scripts_toggle_6
+Return 1 0
+
+:Label_scripts_running
+Function 20 1 5
+getF 0
+Call @Label_get_scripts_hashes
+CallNative unk_0x029D3841 1 1
+iPush_0
+JumpNE @Label_scripts_running_1
+getF 0
+Call @Label_scripts_enabled
+JumpFalse @Label_scripts_running_2
+getF 0
+Call @Label_scripts_toggle
+Jump @Label_scripts_running_end
+
+:Label_scripts_running_2
+Jump @Label_scripts_running_end
+
+:Label_scripts_running_1
+getF 0
+Call @Label_scripts_enabled
+JumpFalse @Label_scripts_running_3
+Jump @Label_scripts_running_end
+
+:Label_scripts_running_3
+getF 0
+Call @Label_scripts_toggle
+Jump @Label_scripts_running_end
+
+:Label_scripts_running_end
 Return 1 0
