@@ -131,7 +131,7 @@ Jump @Label_load_script_11
 :Label_load_script_7
 PushString "TWOSTRINGS"
 CallNative unk_0x574EE85C 1 0
-PushString "ModManager Error:~n~Unable to load script:"
+PushString "Unable to load script:"
 CallNative unk_0x27A244D8 1 0
 getF 0
 Call @Label_get_scripts
@@ -139,6 +139,7 @@ CallNative unk_0x27A244D8 1 0
 iPush_0
 iPush_1
 CallNative unk_0x08F7AF78 2 1
+drop
 Jump @Label_load_script_11
 
 :Label_load_script_11
