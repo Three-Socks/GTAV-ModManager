@@ -65,18 +65,23 @@ Not
 JumpFalse @Label_menu_set_end
 
 PushString "Script 1"
+PushString "mod_script_1"
 Call @Label_menu_addItem_script
 
 PushString "Script 2"
+PushString "mod_script_2"
 Call @Label_menu_addItem_script
 
 PushString "Script 3"
+PushString "mod_script_3"
 Call @Label_menu_addItem_script
 
 PushString "Script 4"
+PushString "mod_script_4"
 Call @Label_menu_addItem_script
 
 PushString "Script 5"
+PushString "mod_script_5"
 Call @Label_menu_addItem_script
 
 iPush_1
@@ -94,7 +99,7 @@ StaticSet1 5
 
 getF 0
 StaticGet1 5
-pstatic2 20
+pstatic1 20
 aSet 1
 
 :Label_menu_addItem_end
@@ -105,29 +110,46 @@ Function 1 1 4
 
 iPush_3
 StaticGet1 5
-pstatic1 50
+pstatic1 31
 aSet 1
 
 getF 0
 StaticGet1 5
-pstatic1 61
+pstatic1 42
 aSet 1
 
 :Label_menu_addItem_bool_end
 Return 1 0
 
+:Label_menu_addItem_action
+Function 1 0 4
+
+iPush_1
+StaticGet1 5
+pstatic1 53
+aSet 1
+
+:Label_menu_addItem_action_end
+Return 0 0
 
 :Label_menu_addItem_script
-Function 1 1 4
+Function 1 2 4
 
 getF 0
 Call @Label_menu_addItem
 
+getF 1
+StaticGet1 5
+pstatic1 64
+aSet 1
+
 iPush_0
 Call @Label_menu_addItem_bool
 
+Call @Label_menu_addItem_action
+
 :Label_menu_addItem_script_end
-Return 1 0
+Return 2 0
 
 :Label_action
 Function 12 0 2
@@ -578,14 +600,14 @@ getF 20
 iPush_0
 Call @Label_set_up_draw
 getF 3
-pstatic2 20
+pstatic1 20
 aGet 1
 StaticGet1 3
 getF 5
 Call @Label_draw_string
 iPush_3
 getF 3
-pstatic1 50
+pstatic1 31
 aGet 1
 JumpNE @Label_draw_menu_bool_end
 getF 18
@@ -595,7 +617,7 @@ iPush_1
 Call @Label_set_up_draw
 
 getF 3
-pstatic1 61
+pstatic1 42
 aGet 1
 Not
 JumpFalse @Label_draw_menu_bool_true
@@ -684,36 +706,8 @@ Return 4 0
 :Label_get_scripts
 Function 15 1 3
 getF 0
-Switch [0 @Label_get_scripts_1]:[1 @Label_get_scripts_2]:[2 @Label_get_scripts_3]:[3 @Label_get_scripts_4]:[4 @Label_get_scripts_5]
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_1
-PushString "mod_script_1"
-Return 1 1
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_2
-PushString "mod_script_2"
-Return 1 1
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_3
-PushString "mod_script_3"
-Return 1 1
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_4
-PushString "mod_script_4"
-Return 1 1
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_5
-PushString "mod_script_5"
-Return 1 1
-Jump @Label_get_scripts_6
-
-:Label_get_scripts_6
-PushString ""
+pstatic1 64
+aGet 1
 Return 1 1
 
 :Label_get_scripts_hashes
