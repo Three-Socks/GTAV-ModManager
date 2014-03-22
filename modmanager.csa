@@ -53,9 +53,25 @@ StaticGet1 11
 Not
 JumpFalse @Label_menu_set_end
 
+Call @Label_modmanager_script_config
+
+iPush_1
+StaticSet1 11
+
+:Label_menu_set_end
+Return 0 0
+
+:Label_modmanager_script_config
+Function 1 0 4
+
 PushString "ModManager"
 StaticSet1 10
 
+StaticGet1 9
+Switch [0 @Label_level_1]:[1 @Label_level_2]
+Jump @Label_level_end
+
+:Label_level_1
 PushString "Script 1"
 PushString "mod_script_1"
 Call @Label_menu_addItem_script
@@ -68,6 +84,9 @@ PushString "Script 3"
 PushString "mod_script_3"
 Call @Label_menu_addItem_script
 
+PushString "Dev Tools"
+Call @Label_menu_addItem
+
 PushString "Script 4"
 PushString "mod_script_4"
 Call @Label_menu_addItem_script
@@ -75,11 +94,39 @@ Call @Label_menu_addItem_script
 PushString "Script 5"
 PushString "mod_script_5"
 Call @Label_menu_addItem_script
+Return 0 0
+
+:Label_level_2
+Call @Label_modmanager_level_2
+Return 0 0
+
+:Label_level_end
+Return 0 0
+
+:Label_modmanager_level_2
+Function 1 0 4
 
 iPush_1
-StaticSet1 11
+pstatic2 21
+aGet 1
+Switch [3 @Label_last_selected_4]
+Jump @Label_modmanager_level_2_end
 
-:Label_menu_set_end
+:Label_last_selected_4
+PushString "Sub Script 1"
+PushString "sub_mod_script_1"
+Call @Label_menu_addItem_script
+
+PushString "Sub Script 2"
+PushString "sub_mod_script_2"
+Call @Label_menu_addItem_script
+
+PushString "Sub Script 3"
+PushString "sub_mod_script_3"
+Call @Label_menu_addItem_script
+Return 0 0
+
+:Label_modmanager_level_2_end
 Return 0 0
 
 :Label_menu_addItem
