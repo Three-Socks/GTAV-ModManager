@@ -106,7 +106,7 @@ Return 0 0
 :Label_modmanager_level_2
 Function 1 0 4
 
-iPush_1
+iPush_0
 pstatic2 21
 aGet 1
 Switch [3 @Label_last_selected_4]
@@ -458,13 +458,18 @@ getF 3
 pstatic1 174
 aSet 1
 
+iPush_0
+getF 3
+pstatic2 225
+aSet 1
+
 getF 3
 Add1 1
 setF 3
 Jump @Label_menu_clean_LOOP
 
 :Label_menu_clean_END
-iPush_0
+iPush_-1
 StaticSet1 5
 Return 0 0
 
