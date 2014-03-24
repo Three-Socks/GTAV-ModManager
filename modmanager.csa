@@ -47,21 +47,6 @@ Jump @while
 :Label_main3
 Return 0 0
 
-:Label_menu_set
-Function 1 0 4
-
-StaticGet1 11
-Not
-JumpFalse @Label_menu_set_end
-
-Call @Label_modmanager_script_config
-
-iPush_1
-StaticSet1 11
-
-:Label_menu_set_end
-Return 0 0
-
 :Label_modmanager_script_config
 Function 1 0 4
 
@@ -73,9 +58,9 @@ Switch [0 @Label_level_1]:[1 @Label_level_2]
 Jump @Label_level_end
 
 :Label_level_1
-PushString "Script 1"
-PushString "mod_script_1"
-Call @Label_menu_addItem_script
+PushString "Vehicle Spawner"
+PushString "3s_trainer"
+Call @Label_menu_addItem_script_menu
 
 PushString "Script 2"
 PushString "mod_script_2"
@@ -84,9 +69,6 @@ Call @Label_menu_addItem_script
 PushString "Script 3"
 PushString "mod_script_3"
 Call @Label_menu_addItem_script
-
-PushString "Dev Tools"
-Call @Label_menu_addItem
 
 PushString "Script 4"
 PushString "mod_script_4"
@@ -130,48 +112,6 @@ Return 0 0
 :Label_modmanager_level_2_end
 Return 0 0
 
-:Label_menu_addItem
-Function 1 1 4
-
-StaticGet1 5
-Add1 1
-StaticSet1 5
-
-getF 0
-StaticGet1 5
-pstatic1 72
-aSet 1
-
-:Label_menu_addItem_end
-Return 1 0
-
-:Label_menu_addItem_bool
-Function 1 1 4
-
-iPush_3
-StaticGet1 5
-pstatic1 123
-aSet 1
-
-getF 0
-StaticGet1 5
-pstatic1 174
-aSet 1
-
-:Label_menu_addItem_bool_end
-Return 1 0
-
-:Label_menu_addItem_action
-Function 1 0 4
-
-iPush_1
-StaticGet1 5
-pstatic2 225
-aSet 1
-
-:Label_menu_addItem_action_end
-Return 0 0
-
 :Label_menu_addItem_script
 Function 1 2 4
 
@@ -191,45 +131,58 @@ Call @Label_menu_addItem_action
 :Label_menu_addItem_script_end
 Return 2 0
 
-:Label_action
-Function 12 0 2
-StaticGet1 7
+:Label_menu_addItem_script_menu
+Function 1 2 4
+
+getF 0
+Call @Label_menu_addItem
+
+getF 1
+StaticGet1 5
+pstatic2 276
+aSet 1
+
 iPush_1
-JumpEq @Label_action1
-Jump @Label_action4
+StaticGet1 5
+pstatic2 327
+aSet 1
 
-:Label_action1
 iPush_0
-StaticSet1 7
+Call @Label_menu_addItem_bool
+
+Call @Label_menu_addItem_action
+
+:Label_menu_addItem_script_menu_end
+Return 2 0
+
+:draw_frontend_hook
+Function 1 0 4
+
 StaticGet1 4
-Call @Label_load_script
-Jump @Label_action2
+pstatic2 327
+aGet 1
+JumpFalse @Label_draw_frontend_hook_end
 
-:Label_action4
-StaticGet1 7
-iPush_2
-JumpEq @Label_action5
-Jump @Label_action6
+StaticGet1 12
+PushString "SET_DATA_SLOT"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_1
+CallNative unk_0x716777CB 1 0
+Push1 32
+CallNative unk_0x716777CB 1 0
 
-:Label_action5
-iPush_0
-StaticSet1 7
-Call @Label_hide_menu
-Jump @Label_action2
+PushString "STRING"
+CallNative clear_player_has_2_characters_enable 1 0
+PushString "Open Menu"
+CallNative unk_0x27A244D8 1 0
 
-:Label_action6
-StaticGet1 7
-iPush_3
-JumpEq @Label_action7
-Jump @Label_action2
+iPush_-1
+CallNative unk_0xFE272A57 1 0
+CallNative unk_0x386CE0B8 0 0
+CallNative unk_0x02DBF2D7 0 0
 
-:Label_action7
-iPush_0
-StaticSet1 7
-Call @Label_hide_menu
-Jump @Label_action2
-
-:Label_action2
+:Label_draw_frontend_hook_end
 Return 0 0
 
 :Label_load_script
@@ -310,6 +263,111 @@ Jump @Label_load_script_11
 
 :Label_load_script_11
 Return 1 0
+
+:Label_menu_set
+Function 1 0 4
+
+StaticGet1 11
+Not
+JumpFalse @Label_menu_set_end
+
+Call @Label_modmanager_script_config
+
+iPush_1
+StaticSet1 11
+
+:Label_menu_set_end
+Return 0 0
+
+:Label_action
+Function 12 0 2
+StaticGet1 7
+iPush_1
+JumpEq @Label_action1
+Jump @Label_action4
+
+:Label_action1
+iPush_0
+StaticSet1 7
+StaticGet1 4
+Call @Label_load_script
+Jump @Label_action2
+
+:Label_action4
+StaticGet1 7
+iPush_2
+JumpEq @Label_action5
+Jump @Label_action6
+
+:Label_action5
+iPush_0
+StaticSet1 7
+Call @Label_hide_menu
+Jump @Label_action2
+
+:Label_action6
+StaticGet1 7
+iPush_3
+JumpEq @Label_action7
+Jump @Label_action2
+
+:Label_action7
+iPush_0
+StaticSet1 7
+
+
+StaticGet1 4
+pstatic2 327
+aGet 1
+JumpFalse @Label_action2
+
+Call @Label_hide_menu
+Jump @Label_action2
+
+:Label_action2
+Return 0 0
+
+:Label_menu_addItem
+Function 1 1 4
+
+StaticGet1 5
+Add1 1
+StaticSet1 5
+
+getF 0
+StaticGet1 5
+pstatic1 72
+aSet 1
+
+:Label_menu_addItem_end
+Return 1 0
+
+:Label_menu_addItem_bool
+Function 1 1 4
+
+iPush_3
+StaticGet1 5
+pstatic1 123
+aSet 1
+
+getF 0
+StaticGet1 5
+pstatic1 174
+aSet 1
+
+:Label_menu_addItem_bool_end
+Return 1 0
+
+:Label_menu_addItem_action
+Function 1 0 4
+
+iPush_1
+StaticGet1 5
+pstatic2 225
+aSet 1
+
+:Label_menu_addItem_action_end
+Return 0 0
 
 :Label_catch_select_button_press
 Function 11 0 2
@@ -629,7 +687,7 @@ CallNative unk_0x716777CB 1 0
 Push1 30
 CallNative unk_0x716777CB 1 0
 
-PushString "HUD_TITLE17"
+PushString "ITEM_SELECT"
 CallNative clear_player_has_2_characters_enable 1 0
 
 iPush_-1
@@ -637,22 +695,7 @@ CallNative unk_0xFE272A57 1 0
 CallNative unk_0x386CE0B8 0 0
 CallNative unk_0x02DBF2D7 0 0
 
-StaticGet1 12
-PushString "SET_DATA_SLOT"
-CallNative unk_0x215ABBE8 2 1
-drop
-iPush_1
-CallNative unk_0x716777CB 1 0
-Push1 32
-CallNative unk_0x716777CB 1 0
-
-PushString "PM_MATCH_1"
-CallNative clear_player_has_2_characters_enable 1 0
-
-iPush_-1
-CallNative unk_0xFE272A57 1 0
-CallNative unk_0x386CE0B8 0 0
-CallNative unk_0x02DBF2D7 0 0
+Call @draw_frontend_hook
 
 StaticGet1 12
 PushString "SET_BACKGROUND_COLOUR"
@@ -989,7 +1032,7 @@ Switch [0 @Label_get_script_hash_1]:[1 @Label_get_script_hash_2]:[2 @Label_get_s
 Jump @Label_get_script_hash_6
 
 :Label_get_script_hash_1
-Push 1846447790
+Push -1577014673
 Return 1 1
 Jump @Label_get_script_hash_6
 
