@@ -35,6 +35,7 @@ StaticGet1 6
 JumpFalse @Label_main2
 Call @Label_menu_set
 Call @Label_draw_window
+Call @Label_draw_frontend
 Call @Label_draw_menu
 Call @Label_catch_updown_button_press
 Call @Label_catch_select_button_press
@@ -208,9 +209,21 @@ Jump @Label_action2
 StaticGet1 7
 iPush_2
 JumpEq @Label_action5
-Jump @Label_action2
+Jump @Label_action6
 
 :Label_action5
+iPush_0
+StaticSet1 7
+Call @Label_hide_menu
+Jump @Label_action2
+
+:Label_action6
+StaticGet1 7
+iPush_3
+JumpEq @Label_action7
+Jump @Label_action2
+
+:Label_action7
 iPush_0
 StaticSet1 7
 Call @Label_hide_menu
@@ -263,12 +276,22 @@ drop
 getF 0
 Call @Label_get_scripts
 CallNative set_script_as_no_longer_needed 1 0
+
+iPush_1
+getF 0
+pstatic1 174
+aSet 1
 Jump @Label_load_script_11
 
 :Label_load_script_10
 getF 0
 Call @Label_get_scripts
 CallNative terminate_all_scripts_with_this_name 1 0
+
+iPush_0
+getF 0
+pstatic1 174
+aSet 1
 Jump @Label_load_script_11
 
 :Label_load_script_7
@@ -310,6 +333,19 @@ CallNative unk_0x4E8E29E6 2 0
 iPush_2
 Push1 175
 CallNative unk_0x4E8E29E6 2 0
+iPush_2
+Push1 176
+CallNative is_control_just_released 2 1
+JumpFalse @Label_740
+iPush_-1
+PushString "SELECT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+iPush_3
+StaticSet1 7
+Jump @Label_739
+
+:Label_740
 iPush_2
 Push1 174
 CallNative is_control_just_released 2 1
@@ -411,6 +447,9 @@ iPush_0
 StaticSet1 8
 iPush_1
 StaticSet1 6
+iPush_0
+StaticSet1 11
+Call @Label_menu_clean
 iPush_-1
 PushString "SELECT"
 PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
@@ -423,6 +462,10 @@ Return 0 0
 
 :Label_hide_menu
 Function 60 0 2
+iPush_0
+StaticSet1 13
+pstatic1 12
+CallNative set_scaleform_movie_as_no_longer_needed 1 0
 iPush_1
 CallNative set_cinematic_button_active 1 0
 iPush_0
@@ -554,6 +597,102 @@ getF 6
 getF 7
 CallNative draw_rect 8 0
 Return 8 0
+
+:Label_draw_frontend
+Function 1 0 4
+
+StaticGet1 12
+CallNative has_scaleform_movie_loaded 1 1
+JumpFalse @Label_draw_frontend_not_loaded
+StaticGet1 13
+JumpFalse @Label_draw_frontend_loaded
+StaticGet1 12
+PushString "CLEAR_ALL"
+CallNative unk_0x215ABBE8 2 1
+drop
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+PushString "SET_MAX_WIDTH"
+CallNative unk_0x215ABBE8 2 1
+drop
+fPush 100
+CallNative unk_0x9A01FFDA 1 0
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+PushString "SET_DATA_SLOT"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_0
+CallNative unk_0x716777CB 1 0
+Push1 30
+CallNative unk_0x716777CB 1 0
+
+PushString "HUD_TITLE17"
+CallNative clear_player_has_2_characters_enable 1 0
+
+iPush_-1
+CallNative unk_0xFE272A57 1 0
+CallNative unk_0x386CE0B8 0 0
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+PushString "SET_DATA_SLOT"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_1
+CallNative unk_0x716777CB 1 0
+Push1 32
+CallNative unk_0x716777CB 1 0
+
+PushString "PM_MATCH_1"
+CallNative clear_player_has_2_characters_enable 1 0
+
+iPush_-1
+CallNative unk_0xFE272A57 1 0
+CallNative unk_0x386CE0B8 0 0
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+PushString "SET_BACKGROUND_COLOUR"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_0
+CallNative unk_0x716777CB 1 0
+iPush_0
+CallNative unk_0x716777CB 1 0
+iPush_0
+CallNative unk_0x716777CB 1 0
+Push1 80
+CallNative unk_0x716777CB 1 0
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+PushString "DRAW_INSTRUCTIONAL_BUTTONS"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_0
+CallNative unk_0x716777CB 1 0
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+Push3 255, 255, 255
+Push1 255
+CallNative unk_0x7B48E696 5 0
+
+:Label_draw_frontend_loaded
+Jump @Label_draw_frontend_end
+
+:Label_draw_frontend_not_loaded
+PushString "instructional_buttons"
+CallNative request_scaleform_movie 1 1
+StaticSet1 12
+iPush_1
+StaticSet1 13
+
+:Label_draw_frontend_end
+Return 0 0
 
 :Label_catch_updown_button_press
 Function 8 0 6
