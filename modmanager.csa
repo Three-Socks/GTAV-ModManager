@@ -28,18 +28,18 @@ iPush_1
 JumpFalse @Label_main3
 iPush_0
 CallNative wait 1 0
-Call @Label_catch_load_button_press
+Call @catch_load_button_press
 
 :Label_main1
 StaticGet1 6
 JumpFalse @Label_main2
-Call @Label_menu_set
-Call @Label_draw_window
-Call @Label_draw_frontend
-Call @Label_draw_menu
-Call @Label_catch_updown_button_press
-Call @Label_catch_select_button_press
-Call @Label_action
+Call @menu_set
+Call @draw_window
+Call @draw_frontend
+Call @draw_menu
+Call @catch_updown_button_press
+Call @catch_select_button_press
+Call @menu_action
 
 :Label_main2
 Jump @while
@@ -47,7 +47,7 @@ Jump @while
 :Label_main3
 Return 0 0
 
-:Label_modmanager_script_config
+:modmanager_script_config
 Function 1 0 4
 
 PushString "ModManager"
@@ -60,37 +60,40 @@ Jump @Label_level_end
 :Label_level_1
 PushString "Vehicle Spawner"
 PushString "3s_trainer"
-Call @Label_menu_addItem_script_menu
+Call @menu_addItem_script_menu
 
 PushString "Script 2"
 PushString "mod_script_2"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
 
 PushString "Script 3"
 PushString "mod_script_3"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
+
+PushString "Sub Menu"
+Call @menu_addItem
 
 PushString "Script 4"
 PushString "mod_script_4"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
 
 PushString "Script 5"
 PushString "mod_script_5"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
 Return 0 0
 
 :Label_level_2
-Call @Label_modmanager_level_2
+Call @modmanager_level_2
 Return 0 0
 
 :Label_level_end
 Return 0 0
 
-:Label_modmanager_level_2
+:modmanager_level_2
 Function 1 0 4
 
 iPush_0
-pstatic2 21
+pstatic2 30
 aGet 1
 Switch [3 @Label_last_selected_4]
 Jump @Label_modmanager_level_2_end
@@ -98,44 +101,57 @@ Jump @Label_modmanager_level_2_end
 :Label_last_selected_4
 PushString "Sub Script 1"
 PushString "sub_mod_script_1"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
 
 PushString "Sub Script 2"
 PushString "sub_mod_script_2"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
 
 PushString "Sub Script 3"
 PushString "sub_mod_script_3"
-Call @Label_menu_addItem_script
+Call @menu_addItem_script
 Return 0 0
 
 :Label_modmanager_level_2_end
 Return 0 0
 
-:Label_menu_addItem_script
-Function 1 2 4
+:menu_addItem_script
+Function 1 2 5
 
 getF 0
-Call @Label_menu_addItem
+Call @menu_addItem
 
 getF 1
 StaticGet1 5
 pstatic2 276
 aSet 1
 
+getF 1
+setF 4
+getF 4
+CallNative get_hash_key 1 1
+CallNative unk_0x029D3841 1 1
 iPush_0
-Call @Label_menu_addItem_bool
+JumpEq @Label_menu_addItem_script_running
+iPush_1
+Call @menu_addItem_bool
+Jump @Label_menu_addItem_script_not_running
 
-Call @Label_menu_addItem_action
+:Label_menu_addItem_script_running
+iPush_0
+Call @menu_addItem_bool
+
+:Label_menu_addItem_script_not_running
+Call @menu_addItem_action
 
 :Label_menu_addItem_script_end
 Return 2 0
 
-:Label_menu_addItem_script_menu
-Function 1 2 4
+:menu_addItem_script_menu
+Function 1 2 5
 
 getF 0
-Call @Label_menu_addItem
+Call @menu_addItem
 
 getF 1
 StaticGet1 5
@@ -147,27 +163,49 @@ StaticGet1 5
 pstatic2 327
 aSet 1
 
+getF 1
+setF 4
+getF 4
+CallNative get_hash_key 1 1
+CallNative unk_0x029D3841 1 1
 iPush_0
-Call @Label_menu_addItem_bool
+JumpEq @Label_menu_addItem_script_menu_running
+iPush_1
+Call @menu_addItem_bool
+Jump @Label_menu_addItem_script_menu_not_running
 
-Call @Label_menu_addItem_action
+:Label_menu_addItem_script_menu_running
+iPush_0
+Call @menu_addItem_bool
+
+:Label_menu_addItem_script_menu_not_running
+Call @menu_addItem_action
 
 :Label_menu_addItem_script_menu_end
 Return 2 0
 
 :draw_frontend_hook
-Function 1 0 4
+Function 1 0 5
 
 StaticGet1 4
 pstatic2 327
 aGet 1
 JumpFalse @Label_draw_frontend_hook_end
+StaticGet1 4
+pstatic2 276
+aGet 1
+setF 4
+getF 4
+CallNative get_hash_key 1 1
+CallNative unk_0x029D3841 1 1
+iPush_0
+JumpEq @Label_draw_frontend_hook_end
 
 StaticGet1 12
 PushString "SET_DATA_SLOT"
 CallNative unk_0x215ABBE8 2 1
 drop
-iPush_1
+iPush_2
 CallNative unk_0x716777CB 1 0
 Push1 32
 CallNative unk_0x716777CB 1 0
@@ -185,34 +223,33 @@ CallNative unk_0x02DBF2D7 0 0
 :Label_draw_frontend_hook_end
 Return 0 0
 
-:Label_load_script
-Function 14 1 7
+:modmanager_load_script
+Function 14 1 5
 PushS 1024
 setF 3
 getF 0
-Call @Label_get_scripts_hashes
+pstatic2 276
+aGet 1
+setF 4
+getF 4
+CallNative get_hash_key 1 1
 CallNative unk_0x029D3841 1 1
 iPush_0
 JumpNE @Label_load_script_10
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative does_script_exist 1 1
 JumpFalse @Label_load_script_7
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative get_length_of_literal_string 1 1
 iPush_0
 JumpEq @Label_load_script_7
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative terminate_all_scripts_with_this_name 1 0
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative request_script 1 0
 
 :Label_load_script_9
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative has_script_loaded 1 1
 Not
 JumpFalse @Label_load_script_8
@@ -221,13 +258,11 @@ CallNative wait 1 0
 Jump @Label_load_script_9
 
 :Label_load_script_8
-getF 0
-Call @Label_get_scripts
+getF 4
 getF 3
 CallNative start_new_script 2 1
 drop
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative set_script_as_no_longer_needed 1 0
 
 iPush_1
@@ -237,8 +272,7 @@ aSet 1
 Jump @Label_load_script_11
 
 :Label_load_script_10
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative terminate_all_scripts_with_this_name 1 0
 
 iPush_0
@@ -252,8 +286,7 @@ PushString "TWOSTRINGS"
 CallNative unk_0x574EE85C 1 0
 PushString "Unable to load script:"
 CallNative unk_0x27A244D8 1 0
-getF 0
-Call @Label_get_scripts
+getF 4
 CallNative unk_0x27A244D8 1 0
 iPush_0
 iPush_1
@@ -264,14 +297,41 @@ Jump @Label_load_script_11
 :Label_load_script_11
 Return 1 0
 
-:Label_menu_set
+:modmanager_open_menu
+Function 1 1 5
+
+getF 0
+pstatic2 276
+aGet 1
+setF 4
+getF 4
+CallNative get_hash_key 1 1
+Switch [-1577014673 @Label_open_menu_3s_trainer]
+Jump @Label_modmanager_open_menu_end
+
+:Label_open_menu_3s_trainer
+PushString "STRING"
+CallNative unk_0x574EE85C 1 0
+PushString "3s_trainer open"
+CallNative unk_0x27A244D8 1 0
+iPush_0
+iPush_1
+CallNative unk_0x08F7AF78 2 1
+drop
+
+Return 1 0
+
+:Label_modmanager_open_menu_end
+Return 1 0
+
+:menu_set
 Function 1 0 4
 
 StaticGet1 11
 Not
 JumpFalse @Label_menu_set_end
 
-Call @Label_modmanager_script_config
+Call @modmanager_script_config
 
 iPush_1
 StaticSet1 11
@@ -279,7 +339,7 @@ StaticSet1 11
 :Label_menu_set_end
 Return 0 0
 
-:Label_action
+:menu_action
 Function 12 0 2
 StaticGet1 7
 iPush_1
@@ -290,7 +350,7 @@ Jump @Label_action4
 iPush_0
 StaticSet1 7
 StaticGet1 4
-Call @Label_load_script
+Call @modmanager_load_script
 Jump @Label_action2
 
 :Label_action4
@@ -302,7 +362,7 @@ Jump @Label_action6
 :Label_action5
 iPush_0
 StaticSet1 7
-Call @Label_hide_menu
+Call @menu_hide
 Jump @Label_action2
 
 :Label_action6
@@ -321,13 +381,25 @@ pstatic2 327
 aGet 1
 JumpFalse @Label_action2
 
-Call @Label_hide_menu
+StaticGet1 4
+pstatic2 276
+aGet 1
+setF 4
+getF 4
+CallNative get_hash_key 1 1
+CallNative unk_0x029D3841 1 1
+iPush_0
+JumpEq @Label_action2
+
+StaticGet1 4
+Call @modmanager_open_menu
+Call @menu_hide
 Jump @Label_action2
 
 :Label_action2
 Return 0 0
 
-:Label_menu_addItem
+:menu_addItem
 Function 1 1 4
 
 StaticGet1 5
@@ -342,7 +414,7 @@ aSet 1
 :Label_menu_addItem_end
 Return 1 0
 
-:Label_menu_addItem_bool
+:menu_addItem_bool
 Function 1 1 4
 
 iPush_3
@@ -358,7 +430,7 @@ aSet 1
 :Label_menu_addItem_bool_end
 Return 1 0
 
-:Label_menu_addItem_action
+:menu_addItem_action
 Function 1 0 4
 
 iPush_1
@@ -369,7 +441,7 @@ aSet 1
 :Label_menu_addItem_action_end
 Return 0 0
 
-:Label_catch_select_button_press
+:catch_select_button_press
 Function 11 0 2
 iPush_0
 CallNative set_cinematic_button_active 1 0
@@ -424,13 +496,13 @@ StaticSet1 11
 
 StaticGet1 4
 StaticGet1 9
-pstatic2 21
+pstatic2 30
 aSet 1
 
 iPush_0
 StaticSet1 4
 
-Call @Label_menu_clean
+Call @menu_clean
 
 StaticGet1 9
 Add1 1
@@ -459,12 +531,12 @@ JumpEq @Label_catch_select_button_press_3
 iPush_0
 StaticSet1 11
 
-Call @Label_menu_clean
+Call @menu_clean
 
 StaticGet1 9
 iPush_1
 Sub
-pstatic2 21
+pstatic2 30
 aGet 1
 StaticSet1 4
 
@@ -481,7 +553,7 @@ StaticSet1 7
 :Label_739
 Return 0 0
 
-:Label_catch_load_button_press
+:catch_load_button_press
 Function 8 0 3
 StaticGet1 8
 Push1 25
@@ -493,7 +565,7 @@ StaticGet1 6
 JumpFalse @Label_catch_load2
 iPush_0
 StaticSet1 8
-Call @Label_hide_menu
+Call @menu_hide
 iPush_-1
 PushString "SELECT"
 PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
@@ -507,7 +579,7 @@ iPush_1
 StaticSet1 6
 iPush_0
 StaticSet1 11
-Call @Label_menu_clean
+Call @menu_clean
 iPush_-1
 PushString "SELECT"
 PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
@@ -515,10 +587,10 @@ CallNative play_sound_frontend 3 0
 Jump @Label_catch_load4
 
 :Label_catch_load4
-Call @Label_load_pressed
+Call @load_pressed
 Return 0 0
 
-:Label_hide_menu
+:menu_hide
 Function 60 0 2
 iPush_0
 StaticSet1 13
@@ -530,7 +602,7 @@ iPush_0
 StaticSet1 6
 Return 0 0
 
-:Label_menu_clean
+:menu_clean
 Function 1 0 5
 
 iPush_0
@@ -574,7 +646,7 @@ iPush_-1
 StaticSet1 5
 Return 0 0
 
-:Label_load_pressed
+:load_pressed
 Function 10 0 2
 CallNative is_pause_menu_active 0 1
 JumpFalse @Label_load_pressed_1
@@ -597,7 +669,7 @@ StaticSet1 8
 :Label_load_pressed_3
 Return 0 0
 
-:Label_draw_window
+:draw_window
 Function 7 0 9
 Push1 140
 pFrame1 2
@@ -623,7 +695,7 @@ getF 2
 getF 3
 getF 4
 getF 5
-Call @Label_draw_rect
+Call @draw_rect
 fPush 0.040625
 fPush 0.040277
 fPush 0.225
@@ -632,10 +704,10 @@ iPush_0
 iPush_0
 iPush_0
 Push1 204
-Call @Label_draw_rect
+Call @draw_rect
 Return 0 0
 
-:Label_draw_rect
+:draw_rect
 Function 6 8 10
 getF 0
 getF 2
@@ -656,7 +728,7 @@ getF 7
 CallNative draw_rect 8 0
 Return 8 0
 
-:Label_draw_frontend
+:draw_frontend
 Function 1 0 4
 
 StaticGet1 12
@@ -690,6 +762,33 @@ CallNative unk_0x716777CB 1 0
 PushString "ITEM_SELECT"
 CallNative clear_player_has_2_characters_enable 1 0
 
+iPush_-1
+CallNative unk_0xFE272A57 1 0
+CallNative unk_0x386CE0B8 0 0
+CallNative unk_0x02DBF2D7 0 0
+
+StaticGet1 12
+PushString "SET_DATA_SLOT"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_1
+CallNative unk_0x716777CB 1 0
+Push1 31
+CallNative unk_0x716777CB 1 0
+
+iPush_0
+StaticGet1 9
+JumpEq @Label_draw_frontend_exit
+
+PushString "ITEM_BACK"
+CallNative clear_player_has_2_characters_enable 1 0
+Jump @Label_draw_frontend_back
+
+:Label_draw_frontend_exit
+PushString "ITEM_EXIT"
+CallNative clear_player_has_2_characters_enable 1 0
+
+:Label_draw_frontend_back
 iPush_-1
 CallNative unk_0xFE272A57 1 0
 CallNative unk_0x386CE0B8 0 0
@@ -737,7 +836,7 @@ StaticSet1 13
 :Label_draw_frontend_end
 Return 0 0
 
-:Label_catch_updown_button_press
+:catch_updown_button_press
 Function 8 0 6
 iPush_0
 Push1 46
@@ -808,7 +907,7 @@ Jump @Label_catch_updown_button_press_END
 :Label_catch_updown_button_press_END
 Return 0 0
 
-:Label_draw_menu
+:draw_menu
 Function 5 0 22
 
 iPush_0
@@ -861,11 +960,11 @@ getF 12
 getF 13
 getF 14
 iPush_0
-Call @Label_set_up_draw
+Call @set_up_draw
 StaticGet1 10
 StaticGet1 3
 fPush 0.04444443
-Call @Label_draw_string
+Call @draw_string
 
 :Label_draw_menu_LOOP
 getF 3
@@ -900,7 +999,7 @@ Push1 240
 Push1 240
 Push1 240
 Push1 255
-Call @Label_draw_rect
+Call @draw_rect
 getF 15
 setF 18
 getF 16
@@ -913,13 +1012,13 @@ getF 18
 getF 19
 getF 20
 iPush_0
-Call @Label_set_up_draw
+Call @set_up_draw
 getF 3
 pstatic1 72
 aGet 1
 StaticGet1 3
 getF 5
-Call @Label_draw_string
+Call @draw_string
 iPush_3
 getF 3
 pstatic1 123
@@ -929,7 +1028,7 @@ getF 18
 getF 19
 getF 20
 iPush_1
-Call @Label_set_up_draw
+Call @set_up_draw
 
 getF 3
 pstatic1 174
@@ -939,14 +1038,14 @@ JumpFalse @Label_draw_menu_bool_true
 getF 10
 fPush_0.0
 getF 5
-Call @Label_draw_string
+Call @draw_string
 Jump @Label_draw_menu_bool_end
 
 :Label_draw_menu_bool_true
 getF 11
 fPush_0.0
 getF 5
-Call @Label_draw_string
+Call @draw_string
 
 :Label_draw_menu_bool_end
 getF 3
@@ -957,7 +1056,7 @@ Jump @Label_draw_menu_LOOP
 :Label_draw_menu_END
 Return 0 0
 
-:Label_draw_string
+:draw_string
 Function 4 3 3
 PushString "STRING"
 CallNative unk_0x3E35563E 1 0
@@ -968,7 +1067,7 @@ getF 2
 CallNative unk_0x6F8350CE 2 0
 Return 3 0
 
-:Label_set_up_draw
+:set_up_draw
 Function 1 4 6
 iPush_0
 CallNative set_text_font 1 0
@@ -1017,45 +1116,3 @@ iPush_0
 iPush_0
 CallNative set_text_edge 5 0
 Return 4 0
-
-:Label_get_scripts
-Function 15 1 3
-getF 0
-pstatic2 276
-aGet 1
-Return 1 1
-
-:Label_get_scripts_hashes
-Function 18 1 3
-getF 0
-Switch [0 @Label_get_script_hash_1]:[1 @Label_get_script_hash_2]:[2 @Label_get_script_hash_3]:[3 @Label_get_script_hash_4]:[4 @Label_get_script_hash_5]
-Jump @Label_get_script_hash_6
-
-:Label_get_script_hash_1
-Push -1577014673
-Return 1 1
-Jump @Label_get_script_hash_6
-
-:Label_get_script_hash_2
-Push 2077829699
-Return 1 1
-Jump @Label_get_script_hash_6
-
-:Label_get_script_hash_3
-Push -1968420887
-Return 1 1
-Jump @Label_get_script_hash_6
-
-:Label_get_script_hash_4
-Push -1744706924
-Return 1 1
-Jump @Label_get_script_hash_6
-
-:Label_get_script_hash_5
-Push -1261036480
-Return 1 1
-Jump @Label_get_script_hash_6
-
-:Label_get_script_hash_6
-iPush_0
-Return 1 1
