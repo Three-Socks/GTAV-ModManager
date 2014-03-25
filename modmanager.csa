@@ -310,15 +310,8 @@ Switch [-1577014673 @Label_open_menu_3s_trainer]
 Jump @Label_modmanager_open_menu_end
 
 :Label_open_menu_3s_trainer
-PushString "STRING"
-CallNative unk_0x574EE85C 1 0
-PushString "3s_trainer open"
-CallNative unk_0x27A244D8 1 0
-iPush_0
 iPush_1
-CallNative unk_0x08F7AF78 2 1
-drop
-
+globalset2 61001
 Return 1 0
 
 :Label_modmanager_open_menu_end
