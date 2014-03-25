@@ -62,23 +62,12 @@ PushString "Vehicle Spawner"
 PushString "3s_trainer"
 Call @menu_addItem_script_menu
 
-PushString "Script 2"
-PushString "mod_script_2"
-Call @menu_addItem_script
+PushString "North Yankton"
+PushString "north_yankton"
+Call @menu_addItem_script_menu
 
-PushString "Script 3"
-PushString "mod_script_3"
-Call @menu_addItem_script
-
-PushString "Sub Menu"
-Call @menu_addItem
-
-PushString "Script 4"
-PushString "mod_script_4"
-Call @menu_addItem_script
-
-PushString "Script 5"
-PushString "mod_script_5"
+PushString "XYZH Coords"
+PushString "xyzh_coords"
 Call @menu_addItem_script
 Return 0 0
 
@@ -306,12 +295,17 @@ aGet 1
 setF 4
 getF 4
 CallNative get_hash_key 1 1
-Switch [-1577014673 @Label_open_menu_3s_trainer]
+Switch [-1577014673 @Label_open_menu_3s_trainer]:[412766788 @Label_open_menu_north_yankton]
 Jump @Label_modmanager_open_menu_end
 
 :Label_open_menu_3s_trainer
 iPush_1
-globalset2 61001
+globalset2 62001
+Return 1 0
+
+:Label_open_menu_north_yankton
+iPush_1
+globalset2 62002
 Return 1 0
 
 :Label_modmanager_open_menu_end
