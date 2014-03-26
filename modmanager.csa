@@ -176,39 +176,6 @@ Return 2 0
 :draw_frontend_hook
 Function 1 0 5
 
-StaticGet1 4
-pstatic2 327
-aGet 1
-JumpFalse @Label_draw_frontend_hook_end
-StaticGet1 4
-pstatic2 276
-aGet 1
-setF 4
-getF 4
-CallNative get_hash_key 1 1
-CallNative unk_0x029D3841 1 1
-iPush_0
-JumpEq @Label_draw_frontend_hook_end
-
-StaticGet1 12
-PushString "SET_DATA_SLOT"
-CallNative unk_0x215ABBE8 2 1
-drop
-iPush_2
-CallNative unk_0x716777CB 1 0
-Push1 32
-CallNative unk_0x716777CB 1 0
-
-PushString "STRING"
-CallNative clear_player_has_2_characters_enable 1 0
-PushString "Open Menu"
-CallNative unk_0x27A244D8 1 0
-
-iPush_-1
-CallNative unk_0xFE272A57 1 0
-CallNative unk_0x386CE0B8 0 0
-CallNative unk_0x02DBF2D7 0 0
-
 :Label_draw_frontend_hook_end
 Return 0 0
 
@@ -258,6 +225,14 @@ iPush_1
 getF 0
 pstatic1 174
 aSet 1
+
+StaticGet1 4
+pstatic2 327
+aGet 1
+JumpFalse @Label_load_script_menu
+Call @menu_hide
+
+:Label_load_script_menu
 Jump @Label_load_script_11
 
 :Label_load_script_10
@@ -284,31 +259,6 @@ drop
 Jump @Label_load_script_11
 
 :Label_load_script_11
-Return 1 0
-
-:modmanager_open_menu
-Function 1 1 5
-
-getF 0
-pstatic2 276
-aGet 1
-setF 4
-getF 4
-CallNative get_hash_key 1 1
-Switch [-1577014673 @Label_open_menu_3s_trainer]:[412766788 @Label_open_menu_north_yankton]
-Jump @Label_modmanager_open_menu_end
-
-:Label_open_menu_3s_trainer
-iPush_1
-globalset2 62001
-Return 1 0
-
-:Label_open_menu_north_yankton
-iPush_1
-globalset2 62002
-Return 1 0
-
-:Label_modmanager_open_menu_end
 Return 1 0
 
 :menu_set
@@ -344,42 +294,11 @@ Jump @Label_action2
 StaticGet1 7
 iPush_2
 JumpEq @Label_action5
-Jump @Label_action6
+Jump @Label_action2
 
 :Label_action5
 iPush_0
 StaticSet1 7
-Call @menu_hide
-Jump @Label_action2
-
-:Label_action6
-StaticGet1 7
-iPush_3
-JumpEq @Label_action7
-Jump @Label_action2
-
-:Label_action7
-iPush_0
-StaticSet1 7
-
-
-StaticGet1 4
-pstatic2 327
-aGet 1
-JumpFalse @Label_action2
-
-StaticGet1 4
-pstatic2 276
-aGet 1
-setF 4
-getF 4
-CallNative get_hash_key 1 1
-CallNative unk_0x029D3841 1 1
-iPush_0
-JumpEq @Label_action2
-
-StaticGet1 4
-Call @modmanager_open_menu
 Call @menu_hide
 Jump @Label_action2
 
@@ -450,19 +369,6 @@ CallNative unk_0x4E8E29E6 2 0
 iPush_2
 Push1 175
 CallNative unk_0x4E8E29E6 2 0
-iPush_2
-Push1 176
-CallNative is_control_just_released 2 1
-JumpFalse @Label_740
-iPush_-1
-PushString "SELECT"
-PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
-CallNative play_sound_frontend 3 0
-iPush_3
-StaticSet1 7
-Jump @Label_739
-
-:Label_740
 iPush_2
 Push1 174
 CallNative is_control_just_released 2 1
