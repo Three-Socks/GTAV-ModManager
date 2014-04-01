@@ -83,7 +83,7 @@ Function 1 0 4
 
 iPush_0
 pstatic2 30
-aGet 1
+ArrayGet1 1
 Switch [3 @Label_last_selected_4]
 Jump @Label_modmanager_level_2_end
 
@@ -113,7 +113,7 @@ Call @menu_addItem
 getF 1
 StaticGet1 5
 pstatic2 276
-aSet 1
+ArraySet1 1
 
 getF 1
 setF 4
@@ -145,12 +145,12 @@ Call @menu_addItem
 getF 1
 StaticGet1 5
 pstatic2 276
-aSet 1
+ArraySet1 1
 
 iPush_1
 StaticGet1 5
 pstatic2 327
-aSet 1
+ArraySet1 1
 
 getF 1
 setF 4
@@ -178,7 +178,7 @@ Function 1 0 5
 
 StaticGet1 4
 pstatic2 327
-aGet 1
+ArrayGet1 1
 JumpFalse @Label_draw_frontend_hook_end
 
 StaticGet1 12
@@ -209,7 +209,7 @@ PushS 1024
 setF 3
 getF 0
 pstatic2 276
-aGet 1
+ArrayGet1 1
 setF 4
 getF 4
 CallNative get_hash_key 1 1
@@ -248,11 +248,11 @@ CallNative set_script_as_no_longer_needed 1 0
 iPush_1
 getF 0
 pstatic1 174
-aSet 1
+ArraySet1 1
 
 StaticGet1 4
 pstatic2 327
-aGet 1
+ArrayGet1 1
 JumpFalse @Label_load_script_menu
 Call @menu_hide
 
@@ -266,7 +266,7 @@ CallNative terminate_all_scripts_with_this_name 1 0
 iPush_0
 getF 0
 pstatic1 174
-aSet 1
+ArraySet1 1
 Jump @Label_load_script_11
 
 :Label_load_script_7
@@ -339,7 +339,7 @@ StaticSet1 5
 getF 0
 StaticGet1 5
 pstatic1 72
-aSet 1
+ArraySet1 1
 
 :Label_menu_addItem_end
 Return 1 0
@@ -350,12 +350,12 @@ Function 1 1 4
 iPush_3
 StaticGet1 5
 pstatic1 123
-aSet 1
+ArraySet1 1
 
 getF 0
 StaticGet1 5
 pstatic1 174
-aSet 1
+ArraySet1 1
 
 :Label_menu_addItem_bool_end
 Return 1 0
@@ -366,7 +366,7 @@ Function 1 0 4
 iPush_1
 StaticGet1 5
 pstatic2 225
-aSet 1
+ArraySet1 1
 
 :Label_menu_addItem_action_end
 Return 0 0
@@ -405,7 +405,7 @@ CallNative play_sound_frontend 3 0
 iPush_1
 StaticGet1 4
 pstatic2 225
-aGet 1
+ArrayGet1 1
 JumpEq @Label_catch_select_button_press_2
 
 iPush_0
@@ -414,7 +414,7 @@ StaticSet1 11
 StaticGet1 4
 StaticGet1 9
 pstatic2 30
-aSet 1
+ArraySet1 1
 
 iPush_0
 StaticSet1 4
@@ -454,7 +454,7 @@ StaticGet1 9
 iPush_1
 Sub
 pstatic2 30
-aGet 1
+ArrayGet1 1
 StaticSet1 4
 
 StaticGet1 9
@@ -536,22 +536,22 @@ JumpGE @Label_menu_clean_END
 PushString ""
 getF 3
 pstatic1 72
-aSet 1
+ArraySet1 1
 
 iPush_0
 getF 3
 pstatic1 123
-aSet 1
+ArraySet1 1
 
 iPush_0
 getF 3
 pstatic1 174
-aSet 1
+ArraySet1 1
 
 iPush_0
 getF 3
 pstatic2 225
-aSet 1
+ArraySet1 1
 
 getF 3
 Add1 1
@@ -932,14 +932,14 @@ iPush_0
 Call @set_up_draw
 getF 3
 pstatic1 72
-aGet 1
+ArrayGet1 1
 StaticGet1 3
 getF 5
 Call @draw_string
 iPush_3
 getF 3
 pstatic1 123
-aGet 1
+ArrayGet1 1
 JumpNE @Label_draw_menu_bool_end
 getF 18
 getF 19
@@ -949,7 +949,7 @@ Call @set_up_draw
 
 getF 3
 pstatic1 174
-aGet 1
+ArrayGet1 1
 Not
 JumpFalse @Label_draw_menu_bool_true
 getF 10
