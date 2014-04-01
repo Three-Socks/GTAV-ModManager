@@ -58,7 +58,7 @@ Switch [0 @Label_level_1]:[1 @Label_level_2]
 Jump @Label_level_end
 
 :Label_level_1
-PushString "Vehicle Spawner"
+PushString "Three-Socks Trainer"
 PushString "3s_trainer"
 Call @menu_addItem_script_menu
 
@@ -175,6 +175,30 @@ Return 2 0
 
 :draw_frontend_hook
 Function 1 0 5
+
+StaticGet1 4
+pstatic2 327
+aGet 1
+JumpFalse @Label_draw_frontend_hook_end
+
+StaticGet1 12
+PushString "SET_DATA_SLOT"
+CallNative unk_0x215ABBE8 2 1
+drop
+iPush_0
+CallNative unk_0x716777CB 1 0
+Push1 30
+CallNative unk_0x716777CB 1 0
+
+PushString "STRING"
+CallNative clear_player_has_2_characters_enable 1 0
+PushString "Open Menu"
+CallNative unk_0x27A244D8 1 0
+
+iPush_-1
+CallNative unk_0xFE272A57 1 0
+CallNative unk_0x386CE0B8 0 0
+CallNative unk_0x02DBF2D7 0 0
 
 :Label_draw_frontend_hook_end
 Return 0 0
