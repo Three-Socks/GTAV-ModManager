@@ -65,23 +65,24 @@ Return 0 0
 
 :modmanager_catch_load_button_press
 Function 1 0 3
-StaticGet1 8
-Push1 15
-JumpLE @Label_catch_load_4
+StaticGet1 19
+Push1 10
+JumpLE @Label_catch_load_2
 StaticGet1 6
 JumpFalse @Label_catch_load_2
-iPush_0
-StaticSet1 8
 Call @menu_hide
 iPush_-1
 PushString "SELECT"
 PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
 CallNative play_sound_frontend 3 0
-Jump @Label_catch_load_4
 
 :Label_catch_load_2
-iPush_0
-StaticSet1 8
+StaticGet1 8
+Push1 10
+JumpLE @Label_catch_load_4
+StaticGet1 6
+Not
+JumpFalse @Label_catch_load_4
 iPush_1
 StaticSet1 6
 iPush_0
@@ -114,15 +115,39 @@ Push1 179
 CallNative is_control_pressed 2 1
 JumpFalse @Label_network_load_pressed_3
 iPush_2
-Push1 175
+Push1 178
 CallNative is_control_pressed 2 1
 JumpFalse @Label_network_load_pressed_3
+StaticGet1 6
+JumpFalse @Label_network_load_pressed_4
+
+iPush_0
+StaticGet1 8
+JumpNE @Label_network_load_pressed_goto_3
+StaticGet1 19
+Add1 1
+StaticSet1 19
+Return 0 0
+
+:Label_network_load_pressed_goto_3
+Return 0 0
+Jump @Label_network_load_pressed_3
+
+:Label_network_load_pressed_4
+iPush_0
+StaticGet1 19
+JumpNE @Label_network_load_pressed_5
 StaticGet1 8
 Add1 1
 StaticSet1 8
 Return 0 0
 
+:Label_network_load_pressed_5
+Return 0 0
+
 :Label_network_load_pressed_3
+iPush_0
+StaticSet1 19
 iPush_0
 StaticSet1 8
 Return 0 0
@@ -136,12 +161,36 @@ iPush_2
 Push1 184
 CallNative is_control_pressed 2 1
 JumpFalse @Label_load_pressed_3
+StaticGet1 6
+JumpFalse @Label_load_pressed_4
+
+iPush_0
+StaticGet1 8
+JumpNE @Label_load_pressed_goto_3
+StaticGet1 19
+Add1 1
+StaticSet1 19
+Return 0 0
+
+:Label_load_pressed_goto_3
+Return 0 0
+Jump @Label_load_pressed_3
+
+:Label_load_pressed_4
+iPush_0
+StaticGet1 19
+JumpNE @Label_load_pressed_5
 StaticGet1 8
 Add1 1
 StaticSet1 8
 Return 0 0
 
+:Label_load_pressed_5
+Return 0 0
+
 :Label_load_pressed_3
+iPush_0
+StaticSet1 19
 iPush_0
 StaticSet1 8
 Return 0 0
@@ -1092,7 +1141,7 @@ getF 0
 StaticSet1 18
 
 StaticGet1 16
-Push1 10
+Push1 15
 JumpLE @Label_menu_do_hold_pressed_1
 StaticGet1 17
 Add1 1
@@ -1131,7 +1180,7 @@ Return 1 0
 :menu_is_hold_pressed
 Function 1 1 4
 StaticGet1 15
-iPush_4
+iPush_6
 JumpLE @Label_menu_is_hold_pressed_false
 iPush_2
 getF 0
