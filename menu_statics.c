@@ -101,5 +101,5 @@ Static[327]
 
 // ModManager
 
-// (float) menu_items_float_val
-Static[327]
+// (bool) modmanager_item_menu (50)
+Static[378]

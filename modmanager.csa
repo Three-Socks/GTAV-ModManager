@@ -111,11 +111,11 @@ CallNative is_pause_menu_active 0 1
 Not
 JumpFalse @Label_network_load_pressed_3
 iPush_2
-Push1 179
+Push1 182
 CallNative is_control_pressed 2 1
 JumpFalse @Label_network_load_pressed_3
 iPush_2
-Push1 178
+Push1 183
 CallNative is_control_pressed 2 1
 JumpFalse @Label_network_load_pressed_3
 StaticGet1 6
