@@ -266,9 +266,7 @@ getF 0
 Call @menu_addItem
 
 getF 1
-StaticGet1 5
-pstatic2 276
-ArraySet1 1
+Call @menu_add_extra
 
 getF 1
 setF 4
@@ -298,9 +296,7 @@ getF 0
 Call @menu_addItem
 
 getF 1
-StaticGet1 5
-pstatic2 276
-ArraySet1 1
+Call @menu_add_extra
 
 iPush_1
 StaticGet1 5
@@ -364,9 +360,7 @@ Return 0 0
 Function 1 0 5
 PushS 1024
 setF 3
-StaticGet1 4
-pstatic2 276
-ArrayGet1 1
+Call @menu_get_current_extra
 setF 4
 getF 4
 CallNative get_hash_key 1 1
