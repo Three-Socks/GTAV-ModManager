@@ -339,98 +339,146 @@ Return 0 0
 Function 1 0 2
 StaticGet1 7
 iPush_1
-JumpNE @Label_action4
+JumpNE @Label_action_2
 iPush_0
 StaticSet1 7
-Call @modmanager_load_script
-Jump @Label_action2
+Call @menu_get_current_extra
+Call @modmanager_load_script_action
+Jump @Label_action_end
 
-:Label_action4
+:Label_action_2
 StaticGet1 7
 iPush_2
-JumpNE @Label_action2
+JumpNE @Label_action_3
 iPush_0
 StaticSet1 7
 Call @menu_hide
+Jump @Label_action_end
 
-:Label_action2
-Return 0 0
-
-:modmanager_load_script
-Function 1 0 5
-PushS 1024
-setF 3
-Call @menu_get_current_extra
-setF 4
+:Label_action_3
+StaticGet1 7
+iPush_3
+JumpNE @Label_action_end
+StaticGet1 4
+pstatic2 378
+ArrayGet1 1
+JumpFalse @Label_action_end
 getF 4
 CallNative get_hash_key 1 1
-CallNative unk_0x029D3841 1 1
-iPush_0
-JumpNE @Label_load_script_10
-getF 4
+Call @modmanager_open_menu
+Call @menu_hide
+
+:Label_action_end
+Return 0 0
+
+:modmanager_load_script_action
+Function 1 1 4
+
+iPush_1
+StaticSet1 7
+
+StaticGet1 26
+Switch [0 @Label_modmanager_load_script_action_0]:[1 @Label_modmanager_load_script_action_1]:[2 @Label_modmanager_load_script_action_2]
+Jump @Label_modmanager_load_script_action_end
+
+:Label_modmanager_load_script_action_0
+getF 0
 CallNative does_script_exist 1 1
+Not
 dup
-JumpFalse @Label_load_script_menu_and
-getF 4
-CallNative get_length_of_literal_string 1 1
+JumpFalse @Label_modmanager_load_script_action_0_and
 iPush_0
-CmpNE
+getF 0
+CallNative get_length_of_literal_string 1 1
+CmpEq
 And
 
-:Label_load_script_menu_and
-JumpFalse @Label_load_script_menu_error
-getF 4
-CallNative terminate_all_scripts_with_this_name 1 0
-getF 4
+:Label_modmanager_load_script_action_0_and
+JumpFalse @Label_modmanager_load_script_action_0_end
+PushString "Unable to load script:"
+getF 0
+iPush_0
+Call @menu_error_2_strings_gxt
+iPush_0
+StaticSet1 7
+Return 1 0
+
+:Label_modmanager_load_script_action_0_end
+iPush_1
+StaticSet1 26
+Return 1 0
+
+:Label_modmanager_load_script_action_1
+getF 0
 CallNative request_script 1 0
 
-:Label_load_script_9
-getF 4
+getF 0
 CallNative has_script_loaded 1 1
-Not
-JumpFalse @Label_load_script_8
-iPush_0
-CallNative wait 1 0
-Jump @Label_load_script_9
+JumpFalse @Label_modmanager_load_script_action_1_end
+iPush_2
+StaticSet1 26
 
-:Label_load_script_8
-getF 4
+:Label_modmanager_load_script_action_1_end
+Return 1 0
+
+:Label_modmanager_load_script_action_2
+iPush_0
+StaticSet1 7
+getF 0
+Call @modmanager_load_script
+iPush_0
+StaticSet1 26
+Return 1 0
+
+:Label_modmanager_load_script_action_end
+Return 1 0
+
+:modmanager_load_script
+Function 1 1 5
+PushS 1024
+setF 3
+
+iPush_0
+getF 0
+CallNative get_hash_key 1 1
+CallNative unk_0x029D3841 1 1
+JumpNE @Label_load_script_10
+getF 0
+CallNative terminate_all_scripts_with_this_name 1 0
+getF 0
 getF 3
 CallNative start_new_script 2 1
 drop
-getF 4
+getF 0
 CallNative set_script_as_no_longer_needed 1 0
 
 iPush_1
 Call @menu_set_current_bool
-
-StaticGet1 4
-pstatic2 378
-ArrayGet1 1
-JumpFalse @Label_load_script_menu
-Call @menu_hide
-
-:Label_load_script_menu
-Jump @Label_load_script_goto_end
-
-:Label_load_script_menu_error
-PushString "Unable to load script:"
-getF 4
-iPush_0
-Call @menu_error_2_strings_gxt
-
-:Label_load_script_goto_end
 Jump @Label_load_script_end
 
 :Label_load_script_10
-getF 4
+getF 0
 CallNative terminate_all_scripts_with_this_name 1 0
-
 iPush_0
 Call @menu_set_current_bool
 
 :Label_load_script_end
-Return 0 0
+Return 1 0
+
+:modmanager_open_menu
+Function 1 1 4
+
+getF 0
+Switch [-1577014673 @Label_modmanager_open_menu_3s_trainer]
+Jump @Label_modmanager_open_menu_end
+
+:Label_modmanager_open_menu_3s_trainer
+iPush_1
+globalset3 2623872
+Return 1 0
+
+:Label_modmanager_open_menu_end
+Return 1 0
 
 :menu_set_frontend
 Function 1 0 5
