@@ -200,66 +200,58 @@ PushString "ModManager"
 StaticSet1 10
 
 StaticGet1 9
-Switch [0 @Label_level_1]:[1 @Label_level_2]
+Switch [0 @Label_level_0]:[1 @Label_level_1]
 Jump @Label_level_end
 
-:Label_level_1
-CallNative network_is_game_in_progress 0 1
-JumpFalse @Label_3s_trainer_mp
+:Label_level_0
 PushString "Three-Socks Trainer"
 PushString "3s_trainer"
-Call @menu_addItem_script
-Jump @Label_3s_trainer_mp_end
-
-:Label_3s_trainer_mp
-PushString "Three-Socks Trainer"
-PushString "3s_trainer"
-Call @menu_addItem_script_menu
+Call @modmanager_addItem_script_menu
 
 :Label_3s_trainer_mp_end
 PushString "North Yankton"
 PushString "north_yankton"
-Call @menu_addItem_script_menu
+Call @modmanager_addItem_script_menu
 
 PushString "XYZH Coords"
 PushString "xyzh_coords"
-Call @menu_addItem_script
+Call @modmanager_addItem_script
 Return 0 0
 
-:Label_level_2
-Call @modmanager_level_2
+:Label_level_1
+Call @modmanager_level_1
 Return 0 0
 
 :Label_level_end
 Return 0 0
 
-:modmanager_level_2
+:modmanager_level_1
 Function 1 0 4
 
 iPush_0
 pstatic2 61
 ArrayGet1 1
-Switch [3 @Label_last_selected_4]
-Jump @Label_modmanager_level_2_end
+Switch [3 @Label_level_1_last_selected_3]
+Jump @Label_modmanager_level_1_end
 
-:Label_last_selected_4
+:Label_level_1_last_selected_3
 PushString "Sub Script 1"
 PushString "sub_mod_script_1"
-Call @menu_addItem_script
+Call @modmanager_addItem_script
 
 PushString "Sub Script 2"
 PushString "sub_mod_script_2"
-Call @menu_addItem_script
+Call @modmanager_addItem_script
 
 PushString "Sub Script 3"
 PushString "sub_mod_script_3"
-Call @menu_addItem_script
+Call @modmanager_addItem_script
 Return 0 0
 
-:Label_modmanager_level_2_end
+:Label_modmanager_level_1_end
 Return 0 0
 
-:menu_addItem_script
+:modmanager_addItem_script
 Function 1 2 5
 
 getF 0
@@ -274,22 +266,22 @@ getF 4
 CallNative get_hash_key 1 1
 CallNative unk_0x029D3841 1 1
 iPush_0
-JumpEq @Label_menu_addItem_script_running
+JumpEq @Label_modmanager_addItem_script_running
 iPush_1
 Call @menu_addItem_bool
-Jump @Label_menu_addItem_script_not_running
+Jump @Label_modmanager_addItem_script_not_running
 
-:Label_menu_addItem_script_running
+:Label_modmanager_addItem_script_running
 iPush_0
 Call @menu_addItem_bool
 
-:Label_menu_addItem_script_not_running
+:Label_modmanager_addItem_script_not_running
 Call @menu_add_action
 
-:Label_menu_addItem_script_end
+:Label_modmanager_addItem_script_end
 Return 2 0
 
-:menu_addItem_script_menu
+:modmanager_addItem_script_menu
 Function 1 2 5
 
 getF 0
@@ -309,19 +301,19 @@ getF 4
 CallNative get_hash_key 1 1
 CallNative unk_0x029D3841 1 1
 iPush_0
-JumpEq @Label_menu_addItem_script_menu_running
+JumpEq @Label_modmanager_addItem_script_menu_running
 iPush_1
 Call @menu_addItem_bool
-Jump @Label_menu_addItem_script_menu_not_running
+Jump @Label_modmanager_addItem_script_menu_not_running
 
-:Label_menu_addItem_script_menu_running
+:Label_modmanager_addItem_script_menu_running
 iPush_0
 Call @menu_addItem_bool
 
-:Label_menu_addItem_script_menu_not_running
+:Label_modmanager_addItem_script_menu_not_running
 Call @menu_add_action
 
-:Label_menu_addItem_script_menu_end
+:Label_modmanager_addItem_script_menu_end
 Return 2 0
 
 :menu_set
