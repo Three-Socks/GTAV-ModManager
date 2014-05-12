@@ -251,6 +251,21 @@ Return 0 0
 :Label_modmanager_level_1_end
 Return 0 0
 
+:modmanager_open_menu
+Function 1 1 4
+
+getF 0
+Switch [-1577014673 @Label_modmanager_open_menu_3s_trainer]
+Jump @Label_modmanager_open_menu_end
+
+:Label_modmanager_open_menu_3s_trainer
+iPush_1
+globalset3 2623872
+Return 1 0
+
+:Label_modmanager_open_menu_end
+Return 1 0
+
 :modmanager_addItem_script
 Function 1 2 5
 
@@ -258,7 +273,7 @@ getF 0
 Call @menu_addItem
 
 getF 1
-Call @menu_add_extra
+Call @menu_add_number
 
 getF 1
 setF 4
@@ -288,7 +303,7 @@ getF 0
 Call @menu_addItem
 
 getF 1
-Call @menu_add_extra
+Call @menu_add_number
 
 iPush_1
 StaticGet1 5
@@ -334,7 +349,7 @@ iPush_1
 JumpNE @Label_action_2
 iPush_0
 StaticSet1 7
-Call @menu_get_current_extra
+Call @menu_get_current_number
 Call @modmanager_load_script_action
 Jump @Label_action_end
 
@@ -351,11 +366,14 @@ Jump @Label_action_end
 StaticGet1 7
 iPush_3
 JumpNE @Label_action_end
+iPush_0
+StaticSet1 7
+
 StaticGet1 4
 pstatic2 378
 ArrayGet1 1
 JumpFalse @Label_action_end
-getF 4
+Call @menu_get_current_number
 CallNative get_hash_key 1 1
 Call @modmanager_open_menu
 Call @menu_hide
@@ -377,20 +395,11 @@ Jump @Label_modmanager_load_script_action_end
 getF 0
 CallNative does_script_exist 1 1
 Not
-dup
-JumpFalse @Label_modmanager_load_script_action_0_and
-iPush_0
-getF 0
-CallNative get_length_of_literal_string 1 1
-CmpEq
-And
-
-:Label_modmanager_load_script_action_0_and
 JumpFalse @Label_modmanager_load_script_action_0_end
 PushString "Unable to load script:"
 getF 0
 iPush_0
-Call @menu_error_2_strings_gxt
+Call @menu_error_2_strings
 iPush_0
 StaticSet1 7
 Return 1 0
@@ -457,21 +466,6 @@ Call @menu_set_current_bool
 :Label_load_script_end
 Return 1 0
 
-:modmanager_open_menu
-Function 1 1 4
-
-getF 0
-Switch [-1577014673 @Label_modmanager_open_menu_3s_trainer]
-Jump @Label_modmanager_open_menu_end
-
-:Label_modmanager_open_menu_3s_trainer
-iPush_1
-globalset3 2623872
-Return 1 0
-
-:Label_modmanager_open_menu_end
-Return 1 0
-
 :menu_set_frontend
 Function 1 0 5
 
@@ -506,6 +500,9 @@ Return 0 0
 :menu_draw_frontend_hook
 Function 1 0 4
 
+StaticGet1 46
+setF 3
+
 iPush_6
 StaticGet1 4
 pstatic1 123
@@ -524,6 +521,11 @@ Or
 :Label_menu_draw_frontend_hook_or
 JumpFalse @Label_menu_draw_frontend_hook_1
 
+getF 3
+Add1 1
+setF 3
+
+getF 3
 Push1 32
 PushString "Edit With Keyboard"
 Call @menu_add_frontend
@@ -534,7 +536,12 @@ pstatic2 378
 ArrayGet1 1
 JumpFalse @Label_menu_draw_frontend_hook_end
 
-Push1 30
+getF 3
+Add1 1
+setF 3
+
+getF 3
+Push1 32
 PushString "Open Menu"
 Call @menu_add_frontend
 
@@ -928,30 +935,29 @@ ArraySet1 1
 Return 2 0
 
 :menu_add_frontend
-Function 1 2 4
+Function 1 3 5
 
 StaticGet1 12
 PushString "SET_DATA_SLOT"
 CallNative unk_0x215ABBE8 2 1
 drop
-StaticGet1 46
-Add1 1
-CallNative unk_0x716777CB 1 0
 getF 0
 CallNative unk_0x716777CB 1 0
-
 getF 1
+CallNative unk_0x716777CB 1 0
+
+getF 2
 CallNative does_text_label_exist 1 1
 JumpFalse @Label_menu_add_frontend_string
 
-getF 1
+getF 2
 CallNative clear_player_has_2_characters_enable 1 0
 Jump @Label_menu_add_frontend_gxt
 
 :Label_menu_add_frontend_string
 PushString "STRING"
 CallNative clear_player_has_2_characters_enable 1 0
-getF 1
+getF 2
 CallNative unk_0x27A244D8 1 0
 
 :Label_menu_add_frontend_gxt
@@ -960,7 +966,7 @@ CallNative unk_0xFE272A57 1 0
 CallNative unk_0x386CE0B8 0 0
 CallNative unk_0x02DBF2D7 0 0
 
-Return 2 0
+Return 3 0
 
 :menu_setup
 Function 1 0 2
@@ -970,17 +976,8 @@ iPush_0
 StaticSet1 4
 iPush_-1
 StaticSet1 5
-CallNative network_is_game_in_progress 0 1
-JumpFalse @Label_menu_setup_not_network
 iPush_0
 Call @menu_set_open_state
-Jump @Label_menu_setup_continue
-
-:Label_menu_setup_not_network
-iPush_1
-Call @menu_set_open_state
-
-:Label_menu_setup_continue
 iPush_0
 StaticSet1 7
 iPush_0
@@ -1910,28 +1907,6 @@ Push1 176
 CallNative is_disabled_control_just_released 2 1
 JumpFalse @Label_catch_select_button_press_end
 
-iPush_6
-StaticGet1 4
-pstatic1 123
-ArrayGet1 1
-CmpEq
-dup
-Not
-JumpFalse @Label_catch_select_button_press_or
-iPush_7
-StaticGet1 4
-pstatic1 123
-ArrayGet1 1
-CmpEq
-Or
-
-:Label_catch_select_button_press_or
-JumpFalse @Label_catch_select_button_press_end
-iPush_-1
-PushString "SELECT"
-PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
-CallNative play_sound_frontend 3 0
-
 iPush_3
 StaticSet1 7
 
@@ -1957,6 +1932,9 @@ Return 1 1
 
 :menu_keyboard
 Function 1 1 36
+
+iPush_3
+StaticSet1 7
 
 StaticGet1 26
 Switch [0 @Label_menu_keyboard_switch_0]:[1 @Label_menu_keyboard_switch_1]
@@ -2119,6 +2097,42 @@ CallNative unk_0x08F7AF78 2 1
 drop
 
 Return 2 0
+
+:menu_error_2_strings
+Function 1 3 6
+
+getF 2
+JumpFalse @Label_menu_error_2_strings_1
+iPush_0
+StaticSet1 11
+
+Call @menu_clean
+
+StaticGet1 9
+iPush_1
+Sub
+StaticSet1 9
+
+StaticGet1 9
+pstatic2 61
+ArrayGet1 1
+StaticSet1 4
+
+Call @menu_set
+
+:Label_menu_error_2_strings_1
+PushString "TWOSTRINGS"
+CallNative unk_0x574EE85C 1 0
+getF 0
+CallNative unk_0x27A244D8 1 0
+getF 1
+CallNative unk_0x27A244D8 1 0
+iPush_0
+iPush_1
+CallNative unk_0x08F7AF78 2 1
+drop
+
+Return 3 0
 
 :menu_error_2_strings_gxt
 Function 1 3 6
@@ -3310,3 +3324,259 @@ iPush_0
 iPush_0
 CallNative set_text_edge 5 0
 Return 5 0
+
+:dummy_data
+Function 1 0 4
+
+PushString "DUMMY1"
+PushString "DUMMY2"
+PushString "DUMMY3"
+PushString "DUMMY4"
+PushString "DUMMY5"
+PushString "DUMMY6"
+PushString "DUMMY7"
+PushString "DUMMY8"
+PushString "DUMMY9"
+PushString "DUMMY10"
+PushString "DUMMY11"
+PushString "DUMMY12"
+PushString "DUMMY13"
+PushString "DUMMY14"
+PushString "DUMMY15"
+PushString "DUMMY16"
+PushString "DUMMY17"
+PushString "DUMMY18"
+PushString "DUMMY19"
+PushString "DUMMY20"
+PushString "DUMMY21"
+PushString "DUMMY22"
+PushString "DUMMY23"
+PushString "DUMMY24"
+PushString "DUMMY25"
+PushString "DUMMY26"
+PushString "DUMMY27"
+PushString "DUMMY28"
+PushString "DUMMY29"
+PushString "DUMMY30"
+PushString "DUMMY31"
+PushString "DUMMY32"
+PushString "DUMMY33"
+PushString "DUMMY34"
+PushString "DUMMY35"
+PushString "DUMMY36"
+PushString "DUMMY37"
+PushString "DUMMY38"
+PushString "DUMMY39"
+PushString "DUMMY40"
+PushString "DUMMY41"
+PushString "DUMMY42"
+PushString "DUMMY43"
+PushString "DUMMY44"
+PushString "DUMMY45"
+PushString "DUMMY46"
+PushString "DUMMY47"
+PushString "DUMMY48"
+PushString "DUMMY49"
+PushString "DUMMY50"
+PushString "DUMMY51"
+PushString "DUMMY52"
+PushString "DUMMY53"
+PushString "DUMMY54"
+PushString "DUMMY55"
+PushString "DUMMY56"
+PushString "DUMMY57"
+PushString "DUMMY58"
+PushString "DUMMY59"
+PushString "DUMMY60"
+PushString "DUMMY61"
+PushString "DUMMY62"
+PushString "DUMMY63"
+PushString "DUMMY64"
+PushString "DUMMY65"
+PushString "DUMMY66"
+PushString "DUMMY67"
+PushString "DUMMY68"
+PushString "DUMMY69"
+PushString "DUMMY70"
+PushString "DUMMY71"
+PushString "DUMMY72"
+PushString "DUMMY73"
+PushString "DUMMY74"
+PushString "DUMMY75"
+PushString "DUMMY76"
+PushString "DUMMY77"
+PushString "DUMMY78"
+PushString "DUMMY79"
+PushString "DUMMY80"
+PushString "DUMMY81"
+PushString "DUMMY82"
+PushString "DUMMY83"
+PushString "DUMMY84"
+PushString "DUMMY85"
+PushString "DUMMY86"
+PushString "DUMMY87"
+PushString "DUMMY88"
+PushString "DUMMY89"
+PushString "DUMMY90"
+PushString "DUMMY91"
+PushString "DUMMY92"
+PushString "DUMMY93"
+PushString "DUMMY94"
+PushString "DUMMY95"
+PushString "DUMMY96"
+PushString "DUMMY97"
+PushString "DUMMY98"
+PushString "DUMMY99"
+PushString "DUMMY100"
+PushString "DUMMY101"
+PushString "DUMMY102"
+PushString "DUMMY103"
+PushString "DUMMY104"
+PushString "DUMMY105"
+PushString "DUMMY106"
+PushString "DUMMY107"
+PushString "DUMMY108"
+PushString "DUMMY109"
+PushString "DUMMY110"
+PushString "DUMMY111"
+PushString "DUMMY112"
+PushString "DUMMY113"
+PushString "DUMMY114"
+PushString "DUMMY115"
+PushString "DUMMY116"
+PushString "DUMMY117"
+PushString "DUMMY118"
+PushString "DUMMY119"
+PushString "DUMMY120"
+PushString "DUMMY121"
+PushString "DUMMY122"
+PushString "DUMMY123"
+PushString "DUMMY124"
+PushString "DUMMY125"
+PushString "DUMMY126"
+PushString "DUMMY127"
+PushString "DUMMY128"
+PushString "DUMMY129"
+PushString "DUMMY130"
+PushString "DUMMY131"
+PushString "DUMMY132"
+PushString "DUMMY133"
+PushString "DUMMY134"
+PushString "DUMMY135"
+PushString "DUMMY136"
+PushString "DUMMY137"
+PushString "DUMMY138"
+PushString "DUMMY139"
+PushString "DUMMY140"
+PushString "DUMMY141"
+PushString "DUMMY142"
+PushString "DUMMY143"
+PushString "DUMMY144"
+PushString "DUMMY145"
+PushString "DUMMY146"
+PushString "DUMMY147"
+PushString "DUMMY148"
+PushString "DUMMY149"
+PushString "DUMMY150"
+PushString "DUMMY151"
+PushString "DUMMY152"
+PushString "DUMMY153"
+PushString "DUMMY154"
+PushString "DUMMY155"
+PushString "DUMMY156"
+PushString "DUMMY157"
+PushString "DUMMY158"
+PushString "DUMMY159"
+PushString "DUMMY160"
+PushString "DUMMY161"
+PushString "DUMMY162"
+PushString "DUMMY163"
+PushString "DUMMY164"
+PushString "DUMMY165"
+PushString "DUMMY166"
+PushString "DUMMY167"
+PushString "DUMMY168"
+PushString "DUMMY169"
+PushString "DUMMY170"
+PushString "DUMMY171"
+PushString "DUMMY172"
+PushString "DUMMY173"
+PushString "DUMMY174"
+PushString "DUMMY175"
+PushString "DUMMY176"
+PushString "DUMMY177"
+PushString "DUMMY178"
+PushString "DUMMY179"
+PushString "DUMMY180"
+PushString "DUMMY181"
+PushString "DUMMY182"
+PushString "DUMMY183"
+PushString "DUMMY184"
+PushString "DUMMY185"
+PushString "DUMMY186"
+PushString "DUMMY187"
+PushString "DUMMY188"
+PushString "DUMMY189"
+PushString "DUMMY190"
+PushString "DUMMY191"
+PushString "DUMMY192"
+PushString "DUMMY193"
+PushString "DUMMY194"
+PushString "DUMMY195"
+PushString "DUMMY196"
+PushString "DUMMY197"
+PushString "DUMMY198"
+PushString "DUMMY199"
+PushString "DUMMY200"
+PushString "DUMMY201"
+PushString "DUMMY202"
+PushString "DUMMY203"
+PushString "DUMMY204"
+PushString "DUMMY205"
+PushString "DUMMY206"
+PushString "DUMMY207"
+PushString "DUMMY208"
+PushString "DUMMY209"
+PushString "DUMMY210"
+PushString "DUMMY211"
+PushString "DUMMY212"
+PushString "DUMMY213"
+PushString "DUMMY214"
+PushString "DUMMY215"
+PushString "DUMMY216"
+PushString "DUMMY217"
+PushString "DUMMY218"
+PushString "DUMMY219"
+PushString "DUMMY220"
+PushString "DUMMY221"
+PushString "DUMMY222"
+PushString "DUMMY223"
+PushString "DUMMY224"
+PushString "DUMMY225"
+PushString "DUMMY226"
+PushString "DUMMY227"
+PushString "DUMMY228"
+PushString "DUMMY229"
+PushString "DUMMY230"
+PushString "DUMMY231"
+PushString "DUMMY232"
+PushString "DUMMY233"
+PushString "DUMMY234"
+PushString "DUMMY235"
+PushString "DUMMY236"
+PushString "DUMMY237"
+PushString "DUMMY238"
+PushString "DUMMY239"
+PushString "DUMMY240"
+PushString "DUMMY241"
+PushString "DUMMY242"
+PushString "DUMMY243"
+PushString "DUMMY244"
+PushString "DUMMY245"
+PushString "DUMMY246"
+PushString "DUMMY247"
+PushString "DUMMY248"
+PushString "DUMMY249"
+PushString "DUMMY250"
+
+Return 0 0
