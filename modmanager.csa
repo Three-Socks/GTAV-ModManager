@@ -10,8 +10,6 @@ JumpFalse @Label_main_end
 iPush_0
 CallNative wait 1 0
 
-Call @modmanager_catch_load_button_press
-
 Call @menu_get_open_state
 JumpFalse @Label_main_2
 
@@ -259,8 +257,6 @@ Switch [-1577014673 @Label_modmanager_open_menu_3s_trainer]
 Jump @Label_modmanager_open_menu_end
 
 :Label_modmanager_open_menu_3s_trainer
-iPush_1
-globalset3 2623872
 Return 1 0
 
 :Label_modmanager_open_menu_end
@@ -976,7 +972,7 @@ iPush_0
 StaticSet1 4
 iPush_-1
 StaticSet1 5
-iPush_0
+iPush_1
 Call @menu_set_open_state
 iPush_0
 StaticSet1 7
@@ -1753,7 +1749,7 @@ Function 1 0 3
 
 iPush_2
 Push1 175
-CallNative is_disabled_control_just_released 2 1
+CallNative is_disabled_control_just_pressed 2 1
 JumpFalse @Label_menu_set_last_selected_end
 
 StaticGet1 9
@@ -1823,7 +1819,7 @@ Return 0 0
 Function 1 0 4
 iPush_2
 Push1 174
-CallNative is_disabled_control_just_released 2 1
+CallNative is_disabled_control_just_pressed 2 1
 JumpFalse @Label_741
 StaticGet1 17
 iPush_2
@@ -1904,7 +1900,7 @@ Jump @Label_catch_select_button_press_end
 :Label_catch_select_button_press_square
 iPush_2
 Push1 176
-CallNative is_disabled_control_just_released 2 1
+CallNative is_disabled_control_just_pressed 2 1
 JumpFalse @Label_catch_select_button_press_end
 
 iPush_3
