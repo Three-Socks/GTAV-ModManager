@@ -72549,11 +72549,11 @@ Call @Label_7004
 pstatic1 75
 GetImmediate1 55
 iPush_4
-JumpNE @Label_7203_new
+JumpNE @Label_additem_modmanager_1
 iPush_1
 staticset2 524
 
-:Label_7203_new
+:Label_additem_modmanager_1
 getF 2
 iPush_1
 JumpNE @Label_7204
