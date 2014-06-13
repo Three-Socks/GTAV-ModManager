@@ -1,8 +1,5 @@
 Function 0 0 2
 Call @menu_setup
-CallNative network_is_game_in_progress 0 1
-JumpFalse @while
-CallNative network_set_script_is_safe_for_network_game 0 0
 
 :while
 iPush_1
@@ -10,6 +7,7 @@ JumpFalse @Label_main_end
 iPush_0
 CallNative wait 1 0
 
+Call @modmanager_security_checks
 Call @menu_get_open_state
 JumpFalse @Label_main_2
 
@@ -23,6 +21,7 @@ Call @menu_catch_select_button_press
 :Label_main_3
 Call @menu_action
 Call @menu_set_frontend
+
 StaticGet1 11
 Not
 JumpFalse @Label_main_draw
@@ -30,6 +29,10 @@ Call @menu_set
 iPush_0
 StaticGet1 7
 JumpNE @Label_main_draw
+iPush_2
+Push1 175
+CallNative is_disabled_control_just_released 2 1
+JumpFalse @Label_main_draw
 Call @menu_set_last_selected
 
 :Label_main_draw
@@ -544,6 +547,206 @@ Call @menu_add_frontend
 :Label_menu_draw_frontend_hook_end
 Return 0 0
 
+:modmanager_setup
+Function 1 0 16
+
+iPush_0
+staticset2 415
+
+iPush_0
+staticset2 416
+
+iPush_0
+StaticSet2 417
+
+iPush_0
+StaticSet2 418
+
+iPush_0
+StaticSet2 419
+
+push1 24
+Add1 42
+push 24
+CallNative shift_left 2 1
+push1 53
+Add1 19
+push 16
+CallNative shift_left 2 1
+Add
+push1 33
+Add1 32
+push 8
+CallNative shift_left 2 1
+Add
+push1 21
+Add1 44
+Add
+StaticSet2 421
+push1 74
+Add1 35
+push 24
+CallNative shift_left 2 1
+push1 19
+Add1 92
+push 16
+CallNative shift_left 2 1
+Add
+push1 32
+Mult1 2
+push 8
+CallNative shift_left 2 1
+Add
+push1 21
+Add1 44
+Add
+StaticSet2 422
+
+PushString "CMOD_MOD_0_D"
+CallNative unk_0x95C4B5AD 1 1
+setF 3
+PushString "CMOD_MOD_1_D"
+CallNative unk_0x95C4B5AD 1 1
+setF 5
+
+PushString ""
+pstatic2 423
+StrCopy 16
+
+iPush_0
+setF 4
+
+:Label_modmanager_setup_while
+getF 4
+Push1 12
+JumpGT @Label_modmanager_setup_while2
+
+getF 4
+iPush_0
+CmpEq
+dup
+Not
+JumpFalse @Label_modmanager_setup_while_or_1
+getF 4
+Push1 9
+CmpEq
+Or
+
+:Label_modmanager_setup_while_or_1
+dup
+Not
+JumpFalse @Label_modmanager_setup_while_or_2
+getF 4
+Push1 10
+CmpEq
+Or
+
+:Label_modmanager_setup_while_or_2
+dup
+Not
+JumpFalse @Label_modmanager_setup_while_or_3
+getF 4
+Push1 11
+CmpEq
+Or
+
+:Label_modmanager_setup_while_or_3
+dup
+Not
+JumpFalse @Label_modmanager_setup_while_or
+getF 4
+Push1 11
+CmpEq
+Or
+
+:Label_modmanager_setup_while_or
+JumpFalse @Label_modmanager_setup_while_goto
+getF 3
+getF 4
+getF 4
+Add1 1
+iPush_1
+CallNative unk_0x0183A66C 4 1
+pstatic2 423
+StrAdd 16
+
+:Label_modmanager_setup_while_goto
+getF 4
+Add1 1
+setF 4
+Jump @Label_modmanager_setup_while
+
+:Label_modmanager_setup_while2
+iPush_0
+setF 4
+
+:Label_modmanager_setup_while2_2
+getF 4
+Push1 68
+JumpGT @Label_modmanager_setup_while2_exit
+
+getF 4
+Push1 34
+CmpEq
+dup
+Not
+JumpFalse @Label_modmanager_setup_while2_or_1
+getF 4
+Push1 9
+CmpEq
+Or
+
+:Label_modmanager_setup_while2_or_1
+dup
+Not
+JumpFalse @Label_modmanager_setup_while2_or_2
+getF 4
+Push1 49
+CmpEq
+Or
+
+:Label_modmanager_setup_while2_or_2
+dup
+Not
+JumpFalse @Label_modmanager_setup_while2_or_3
+getF 4
+Push1 60
+CmpEq
+Or
+
+:Label_modmanager_setup_while2_or_3
+dup
+Not
+JumpFalse @Label_modmanager_setup_while2_or
+getF 4
+Push1 66
+CmpEq
+Or
+
+:Label_modmanager_setup_while2_or
+JumpFalse @Label_modmanager_setup_while2_goto
+getF 5
+getF 4
+getF 4
+Add1 1
+iPush_1
+CallNative unk_0x0183A66C 4 1
+pstatic2 423
+StrAdd 16
+
+:Label_modmanager_setup_while2_goto
+getF 4
+Add1 1
+setF 4
+Jump @Label_modmanager_setup_while2_2
+
+:Label_modmanager_setup_while2_exit
+Return 0 0
+
+:modmanager_security_checks
+Function 1 0 4
+Return 0 0
+
 :menu_addItem
 Function 1 1 4
 
@@ -582,6 +785,81 @@ pstatic2 276
 ArraySet1 1
 
 :Label_menu_addItem_add_number_end
+Return 2 0
+
+:menu_addItem_gxt_add_number
+Function 1 2 5
+
+StaticGet1 5
+Add1 1
+StaticSet1 5
+
+Push1 9
+StaticGet1 5
+pstatic1 123
+ArraySet1 1
+
+getF 0
+StaticGet1 5
+pstatic1 72
+ArraySet1 1
+
+getF 1
+StaticGet1 5
+pstatic2 276
+ArraySet1 1
+
+:Label_menu_addItem_gxt_add_number_end
+Return 2 0
+
+:menu_addItem_gxt_add_number2
+Function 1 2 5
+
+StaticGet1 5
+Add1 1
+StaticSet1 5
+
+Push1 10
+StaticGet1 5
+pstatic1 123
+ArraySet1 1
+
+getF 0
+StaticGet1 5
+pstatic1 72
+ArraySet1 1
+
+getF 1
+StaticGet1 5
+pstatic2 276
+ArraySet1 1
+
+:Label_menu_addItem_gxt_add_number2_end
+Return 2 0
+
+:menu_addItem_gxt_number
+Function 1 2 5
+
+StaticGet1 5
+Add1 1
+StaticSet1 5
+
+Push1 11
+StaticGet1 5
+pstatic1 123
+ArraySet1 1
+
+getF 0
+StaticGet1 5
+pstatic1 72
+ArraySet1 1
+
+getF 1
+StaticGet1 5
+pstatic2 276
+ArraySet1 1
+
+:Label_menu_addItem_gxt_number_end
 Return 2 0
 
 :menu_addItem_number
@@ -974,6 +1252,8 @@ iPush_-1
 StaticSet1 5
 iPush_1
 Call @menu_set_open_state
+
+:Label_menu_setup_continue
 iPush_0
 StaticSet1 7
 iPush_0
@@ -1747,11 +2027,6 @@ Return 0 0
 :menu_set_last_selected
 Function 1 0 3
 
-iPush_2
-Push1 175
-CallNative is_disabled_control_just_pressed 2 1
-JumpFalse @Label_menu_set_last_selected_end
-
 StaticGet1 9
 pstatic2 61
 ArrayGet1 1
@@ -1819,7 +2094,7 @@ Return 0 0
 Function 1 0 4
 iPush_2
 Push1 174
-CallNative is_disabled_control_just_pressed 2 1
+CallNative is_disabled_control_just_released 2 1
 JumpFalse @Label_741
 StaticGet1 17
 iPush_2
@@ -1900,7 +2175,7 @@ Jump @Label_catch_select_button_press_end
 :Label_catch_select_button_press_square
 iPush_2
 Push1 176
-CallNative is_disabled_control_just_pressed 2 1
+CallNative is_disabled_control_just_released 2 1
 JumpFalse @Label_catch_select_button_press_end
 
 iPush_3
@@ -1914,6 +2189,28 @@ Function 1 2 16
 getF 1
 pFrame1 4
 StrCopy 16
+getF 0
+pFrame1 4
+StrAddi 16
+pFrame1 4
+Call @menu_return_var
+Return 2 1
+
+
+:menu_add_int_to_string2
+Function 1 2 16
+getF 1
+pFrame1 4
+StrCopy 16
+
+getF 0
+Push1 10
+JumpGE @Label_menu_add_int_to_string2_1
+PushString "0"
+pFrame1 4
+StrAdd 16
+
+:Label_menu_add_int_to_string2_1
 getF 0
 pFrame1 4
 StrAddi 16
@@ -2179,6 +2476,8 @@ PushString "CommonMenu"
 CallNative set_streamed_texture_dict_as_no_longer_needed 1 0
 iPush_0
 Call @menu_set_open_state
+
+:menu_hide_end
 Return 0 0
 
 :menu_frontend_clean
@@ -2426,19 +2725,18 @@ Return 1 1
 
 :menu_up_pressed
 Function 1 1 4
+
 iPush_2
 Push1 162
 CallNative is_disabled_control_just_pressed 2 1
-JumpFalse @Label_menu_up_pressed_not
-iPush_1
-StaticSet1 14
-iPush_1
-Return 1 1
-Jump @Label_menu_up_pressed_hold
-
-:Label_menu_up_pressed_not
+dup
+Not
+JumpFalse @Label_menu_up_pressed_or
 Push1 162
 Call @menu_is_hold_pressed
+Or
+
+:Label_menu_up_pressed_or
 JumpFalse @Label_menu_up_pressed_hold
 iPush_1
 StaticSet1 14
@@ -2460,16 +2758,14 @@ Function 1 1 4
 iPush_2
 Push1 161
 CallNative is_disabled_control_just_pressed 2 1
-JumpFalse @Label_menu_down_pressed_not
-iPush_1
-StaticSet1 14
-iPush_1
-Return 1 1
-Jump @Label_menu_down_pressed_hold
-
-:Label_menu_down_pressed_not
+dup
+Not
+JumpFalse @Label_menu_down_pressed_or
 Push1 161
 Call @menu_is_hold_pressed
+Or
+
+:Label_menu_down_pressed_or
 JumpFalse @Label_menu_down_pressed_hold
 iPush_1
 StaticSet1 14
@@ -2491,16 +2787,14 @@ Function 1 1 4
 iPush_2
 Push1 163
 CallNative is_disabled_control_just_pressed 2 1
-JumpFalse @Label_menu_left_pressed_not
-iPush_1
-StaticSet1 14
-iPush_1
-Return 1 1
-Jump @Label_menu_left_pressed_hold
-
-:Label_menu_left_pressed_not
+dup
+Not
+JumpFalse @Label_menu_left_pressed_or
 Push1 163
 Call @menu_is_hold_pressed
+Or
+
+:Label_menu_left_pressed_or
 JumpFalse @Label_menu_left_pressed_hold
 iPush_1
 StaticSet1 14
@@ -2522,16 +2816,14 @@ Function 1 1 4
 iPush_2
 Push1 164
 CallNative is_disabled_control_just_pressed 2 1
-JumpFalse @Label_menu_right_pressed_not
-iPush_1
-StaticSet1 14
-iPush_1
-Return 1 1
-Jump @Label_menu_right_pressed_hold
-
-:Label_menu_right_pressed_not
+dup
+Not
+JumpFalse @Label_menu_right_pressed_or
 Push1 164
 Call @menu_is_hold_pressed
+Or
+
+:Label_menu_right_pressed_or
 JumpFalse @Label_menu_right_pressed_hold
 iPush_1
 StaticSet1 14
@@ -2712,6 +3004,47 @@ PushString "STRING"
 CallNative unk_0x3E35563E 1 0
 getF 4
 CallNative unk_0x27A244D8 1 0
+StaticGet1 3
+getF 1
+CallNative unk_0x6F8350CE 2 0
+
+Return 2 0
+
+:menu_draw_gxt_number_add
+Function 1 2 10
+
+getF 0
+pstatic2 276
+ArrayGet1 1
+getF 0
+pstatic1 72
+ArrayGet1 1
+Call @menu_add_int_to_string
+setF 4
+
+getF 4
+CallNative unk_0x3E35563E 1 0
+StaticGet1 3
+getF 1
+CallNative unk_0x6F8350CE 2 0
+
+Return 2 0
+
+
+:menu_draw_gxt_number2_add
+Function 1 2 10
+
+getF 0
+pstatic2 276
+ArrayGet1 1
+getF 0
+pstatic1 72
+ArrayGet1 1
+Call @menu_add_int_to_string2
+setF 4
+
+getF 4
+CallNative unk_0x3E35563E 1 0
 StaticGet1 3
 getF 1
 CallNative unk_0x6F8350CE 2 0
@@ -2944,10 +3277,69 @@ Call @set_up_draw
 getF 3
 getF 5
 Call @menu_draw_number_add
-
 Jump @Label_draw_menu_bool
 
 :Label_draw_menu_number_add_end
+Push1 9
+getF 3
+pstatic1 123
+ArrayGet1 1
+JumpNE @Label_draw_menu_gxt_number_add_end
+
+getF 18
+getF 19
+getF 20
+fPush_1.0
+iPush_0
+Call @set_up_draw
+getF 3
+getF 5
+Call @menu_draw_gxt_number_add
+Jump @Label_draw_menu_bool
+
+:Label_draw_menu_gxt_number_add_end
+Push1 10
+getF 3
+pstatic1 123
+ArrayGet1 1
+JumpNE @Label_draw_menu_gxt_number2_add_end
+
+getF 18
+getF 19
+getF 20
+fPush_1.0
+iPush_0
+Call @set_up_draw
+getF 3
+getF 5
+Call @menu_draw_gxt_number2_add
+Jump @Label_draw_menu_bool
+
+:Label_draw_menu_gxt_number2_add_end
+Push1 11
+getF 3
+pstatic1 123
+ArrayGet1 1
+JumpNE @Label_draw_menu_gxt_number_end
+
+getF 18
+getF 19
+getF 20
+fPush_1.0
+iPush_0
+Call @set_up_draw
+getF 3
+pstatic1 72
+ArrayGet1 1
+getF 3
+pstatic2 276
+ArrayGet1 1
+StaticGet1 3
+getF 5
+Call @draw_number_gxt
+Jump @Label_draw_menu_bool
+
+:Label_draw_menu_gxt_number_end
 getF 18
 getF 19
 getF 20
@@ -3284,6 +3676,17 @@ getF 1
 getF 2
 CallNative unk_0x6F8350CE 2 0
 Return 3 0
+
+:draw_number_gxt
+Function 1 4 6
+getF 0
+CallNative unk_0x3E35563E 1 0
+getF 1
+CallNative unk_0xFE272A57 1 0
+getF 2
+getF 3
+CallNative unk_0x6F8350CE 2 0
+Return 4 0
 
 :set_up_draw
 Function 1 5 7
