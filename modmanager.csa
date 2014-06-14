@@ -337,6 +337,15 @@ StaticSet1 11
 
 Call @modmanager_script_config
 
+iPush_0
+StaticGet1 9
+JumpNE @Label_menu_set_end
+PushString "Enter Script"
+PushString ""
+Push1 15
+Call @menu_addItem_keyboard
+Call @menu_add_action
+
 :Label_menu_set_end
 Return 0 0
 
