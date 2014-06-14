@@ -207,9 +207,8 @@ Jump @Label_level_end
 :Label_level_0
 PushString "Three-Socks Trainer"
 PushString "3s_trainer"
-Call @modmanager_addItem_script_menu
+Call @modmanager_addItem_script
 
-:Label_3s_trainer_mp_end
 PushString "North Yankton"
 PushString "north_yankton"
 Call @modmanager_addItem_script_menu
@@ -368,15 +367,6 @@ JumpNE @Label_action_end
 iPush_0
 StaticSet1 7
 
-StaticGet1 4
-pstatic2 378
-ArrayGet1 1
-JumpFalse @Label_action_end
-Call @menu_get_current_number
-CallNative get_hash_key 1 1
-Call @modmanager_open_menu
-Call @menu_hide
-
 :Label_action_end
 Return 0 0
 
@@ -454,6 +444,16 @@ CallNative set_script_as_no_longer_needed 1 0
 
 iPush_1
 Call @menu_set_current_bool
+
+StaticGet1 4
+pstatic2 378
+ArrayGet1 1
+JumpFalse @Label_load_script_goto_end
+
+Call @menu_hide
+CallNative terminate_this_thread 0 0
+
+:Label_load_script_goto_end
 Jump @Label_load_script_end
 
 :Label_load_script_10
@@ -518,21 +518,6 @@ CmpEq
 Or
 
 :Label_menu_draw_frontend_hook_or
-JumpFalse @Label_menu_draw_frontend_hook_1
-
-getF 3
-Add1 1
-setF 3
-
-getF 3
-Push1 32
-PushString "Edit With Keyboard"
-Call @menu_add_frontend
-
-:Label_menu_draw_frontend_hook_1
-StaticGet1 4
-pstatic2 378
-ArrayGet1 1
 JumpFalse @Label_menu_draw_frontend_hook_end
 
 getF 3
@@ -541,7 +526,7 @@ setF 3
 
 getF 3
 Push1 32
-PushString "Open Menu"
+PushString "Edit With Keyboard"
 Call @menu_add_frontend
 
 :Label_menu_draw_frontend_hook_end
