@@ -121,3 +121,9 @@ Static_327[* 50]
 
 // (bool) modmanager_item_menu (50)
 Static_378[* 50]
+
+// (bool) modmanager_sec_var
+Static_429
+
+// (char) modmanager_sec_var_string1 (ModManager)
+Static_430
