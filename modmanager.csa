@@ -219,14 +219,17 @@ Jump @Label_level_end
 :Label_level_0
 PushString "Three-Socks Trainer"
 PushString "3s_trainer"
+PushS 1024
 Call @modmanager_addItem_script
 
 PushString "North Yankton"
 PushString "north_yankton"
+PushS 512
 Call @modmanager_addItem_script_menu
 
 PushString "XYZH Coords"
 PushString "xyzh_coords"
+Push1 128
 Call @modmanager_addItem_script
 Return 0 0
 
@@ -277,7 +280,7 @@ Return 1 0
 Return 1 0
 
 :modmanager_addItem_script
-Function 1 2 5
+Function 1 3 6
 
 getF 0
 Call @menu_addItem
@@ -285,9 +288,12 @@ Call @menu_addItem
 getF 1
 Call @menu_add_number
 
+getF 2
+Call @menu_add_data_2
+
 getF 1
-setF 4
-getF 4
+setF 5
+getF 5
 CallNative get_hash_key 1 1
 CallNative unk_0x029D3841 1 1
 iPush_0
@@ -304,10 +310,10 @@ Call @menu_addItem_bool
 Call @menu_add_action
 
 :Label_modmanager_addItem_script_end
-Return 2 0
+Return 3 0
 
 :modmanager_addItem_script_menu
-Function 1 2 5
+Function 1 3 6
 
 getF 0
 Call @menu_addItem
@@ -315,14 +321,17 @@ Call @menu_addItem
 getF 1
 Call @menu_add_number
 
+getF 2
+Call @menu_add_data_2
+
 iPush_1
 StaticGet1 5
 pstatic2 378
 ArraySet1 1
 
 getF 1
-setF 4
-getF 4
+setF 5
+getF 5
 CallNative get_hash_key 1 1
 CallNative unk_0x029D3841 1 1
 iPush_0
@@ -339,7 +348,7 @@ Call @menu_addItem_bool
 Call @menu_add_action
 
 :Label_modmanager_addItem_script_menu_end
-Return 2 0
+Return 3 0
 
 :menu_set
 Function 1 0 4
@@ -511,8 +520,6 @@ Return 1 0
 
 :modmanager_load_script
 Function 1 1 5
-PushS 1024
-setF 3
 
 iPush_0
 getF 0
@@ -522,7 +529,7 @@ JumpNE @Label_load_script_10
 getF 0
 CallNative terminate_all_scripts_with_this_name 1 0
 getF 0
-getF 3
+Call @menu_get_current_data_2
 CallNative start_new_script 2 1
 drop
 getF 0
@@ -931,7 +938,7 @@ ArraySet1 1
 :Label_menu_addItem_float_end
 Return 2 0
 
-:menu_add_float
+:menu_add_data_2
 Function 1 1 4
 
 getF 0
@@ -939,8 +946,16 @@ StaticGet1 5
 pstatic2 327
 ArraySet1 1
 
-:Label_menu_add_float_end
+:Label_menu_add_data_2_end
 Return 1 0
+
+:menu_get_current_data_2
+Function 1 0 4
+
+StaticGet1 4
+pstatic2 327
+ArrayGet1 1
+Return 0 1
 
 :menu_addItem_bool
 Function 1 1 4
