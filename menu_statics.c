@@ -127,3 +127,6 @@ Static_429
 
 // (char) modmanager_sec_var_string1 (ModManager)
 Static_430
+
+// (char) modmanager_script_loaded_time
+Static_434
