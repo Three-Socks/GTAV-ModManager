@@ -523,8 +523,8 @@ Call @modmanager_load_script
 getF 0
 CallNative get_hash_key 1 1
 CallNative unk_0x029D3841 1 1
-iPush_1
-JumpLT @Label_modmanager_load_script_action_2_1
+iPush_0
+JumpLE @Label_modmanager_load_script_action_2_1
 iPush_0
 StaticSet1 7
 iPush_0
@@ -556,6 +556,12 @@ Call @menu_error
 Jump @Label_modmanager_load_script_action_2_end
 
 :Label_modmanager_load_script_action_2_running
+iPush_0
+StaticSet1 7
+iPush_0
+StaticSet1 26
+iPush_0
+StaticSet2 434
 getF 0
 CallNative terminate_all_scripts_with_this_name 1 0
 iPush_0
@@ -606,6 +612,9 @@ Function 1 0 4
 
 PushString "ModManager"
 StaticSet2 430
+
+iPush_0
+StaticSet2 434
 
 Return 0 0
 

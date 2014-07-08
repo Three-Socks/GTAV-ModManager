@@ -77947,6 +77947,19 @@ iPush_0
 staticset2 526
 
 :Label_7891
+PushString "MODMANAGER"
+CallNative does_text_label_exist 1 1
+JumpFalse @Label_additem_modmanager_gxt
+iPush_4
+PushString "MODMANAGER"
+iPush_0
+iPush_1
+iPush_0
+iPush_0
+Call @Label_7690
+Jump @Label_additem_modmanager_gxt_end
+
+:Label_additem_modmanager_gxt
 iPush_4
 PushString "HUD_TITLE17"
 iPush_0
@@ -77954,6 +77967,8 @@ iPush_1
 iPush_0
 iPush_0
 Call @Label_7690
+
+:Label_additem_modmanager_gxt_end
 pstatic1 75
 GetImmediate1 55
 iPush_4
