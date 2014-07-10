@@ -2,13 +2,16 @@ Function 0 0 2
 Call @menu_setup
 Call @modmanager_setup
 
+CallNative network_is_game_in_progress 0 1
+JumpFalse @while
+CallNative network_set_script_is_safe_for_network_game 0 0
+
 :while
 iPush_1
 JumpFalse @Label_main_end
 iPush_0
 CallNative wait 1 0
 
-Call @modmanager_security_checks
 Call @menu_get_open_state
 JumpFalse @Label_main_2
 
@@ -52,13 +55,6 @@ Return 0 0
 :menu_get_open_state
 Function 1 0 4
 
-StaticGet2 429
-Not
-JumpFalse @Label_menu_get_open_state_1
-getF 3
-Push1 100
-pstatic2 61
-ArraySet1 1
 iPush_0
 Return 0 1
 
@@ -617,113 +613,6 @@ iPush_0
 StaticSet2 434
 
 Return 0 0
-
-:modmanager_security_checks
-Function 1 0 4
-
-iPush_1
-StaticSet2 429
-
-CallNative network_is_game_in_progress 0 1
-dup
-Not
-JumpFalse @Label_modmanager_security_checks_or
-CallNative is_xbox360_version 0 1
-Or
-
-:Label_modmanager_security_checks_or
-JumpFalse @Label_modmanager_security_checks_1
-Call @modmanager_security_checks_crash
-Call @modmanager_security_checks_terminate
-fPush 0.0
-StaticSet1 3
-iPush_0
-StaticSet1 4
-iPush_-1
-StaticSet1 5
-iPush_0
-Call @menu_set_open_state
-
-iPush_0
-StaticSet1 7
-iPush_0
-StaticSet1 8
-
-iPush_0
-StaticSet1 9
-
-PushString ""
-StaticSet1 10
-
-iPush_0
-StaticSet1 11
-
-iPush_0
-StaticSet1 15
-
-iPush_0
-StaticSet1 17
-
-fPush_0.0
-StaticSet1 20
-
-StaticGet1 20
-StaticSet1 21
-
-fPush_0.0
-StaticSet1 22
-
-iPush_0
-StaticSet1 23
-
-StaticGet1 23
-StaticSet1 24
-
-iPush_0
-StaticSet1 25
-
-iPush_0
-StaticSet1 45
-
-iPush_0
-StaticSet1 46
-
-:Label_modmanager_security_checks_1
-Push 1399537909
-StaticGet2 430
-CallNative get_hash_key 1 1
-JumpEq @Label_modmanager_security_checks_end
-Call @modmanager_security_checks_crash
-Call @modmanager_security_checks_terminate
-
-:Label_modmanager_security_checks_end
-Return 0 0
-
-:modmanager_security_checks_terminate
-Function 1 0 4
-
-getF 3
-Push1 100
-pstatic2 61
-ArraySet1 1
-
-Return 0 0
-
-:modmanager_security_checks_crash
-Function 1 0 2
-
-iPush_1
-setF 0
-iPush_1
-setF 1
-iPush_1
-setF 2
-iPush_1
-setF 3
-iPush_1
-setF 4
-
-Return 1 0
 
 :menu_set_frontend
 Function 1 0 5
