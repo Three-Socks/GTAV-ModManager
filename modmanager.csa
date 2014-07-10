@@ -598,7 +598,6 @@ ArrayGet1 1
 JumpFalse @Label_load_script_end
 
 Call @menu_hide
-CallNative terminate_this_thread 0 0
 
 :Label_load_script_end
 Return 1 0
@@ -2418,7 +2417,6 @@ PushString "CommonMenu"
 CallNative set_streamed_texture_dict_as_no_longer_needed 1 0
 iPush_0
 Call @menu_set_open_state
-CallNative terminate_this_thread 0 0
 
 :menu_hide_end
 Return 0 0
