@@ -252,14 +252,17 @@ Jump @Label_modmanager_level_1_end
 :Label_level_1_last_selected_3
 PushString "Sub Script 1"
 PushString "sub_mod_script_1"
+PushS 1024
 Call @modmanager_addItem_script
 
 PushString "Sub Script 2"
 PushString "sub_mod_script_2"
+PushS 1024
 Call @modmanager_addItem_script
 
 PushString "Sub Script 3"
 PushString "sub_mod_script_3"
+PushS 1024
 Call @modmanager_addItem_script
 Return 0 0
 
@@ -368,6 +371,8 @@ PushString "Enter Script"
 PushString ""
 Push1 15
 Call @menu_addItem_keyboard
+PushS 1024
+Call @menu_add_data_2
 Call @menu_add_action
 
 :Label_menu_set_end
