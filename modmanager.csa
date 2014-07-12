@@ -12,6 +12,8 @@ JumpFalse @Label_main_end
 iPush_0
 CallNative wait 1 0
 
+Call @modmanager_catch_load_button_press
+
 Call @menu_get_open_state
 JumpFalse @Label_main_2
 
@@ -55,10 +57,6 @@ Return 0 0
 :menu_get_open_state
 Function 1 0 4
 
-iPush_0
-Return 0 1
-
-:Label_menu_get_open_state_1
 StaticGet1 6
 Return 0 1
 
@@ -101,15 +99,7 @@ PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
 CallNative play_sound_frontend 3 0
 
 :Label_catch_load_4
-CallNative network_is_game_in_progress 0 1
-JumpFalse @Label_catch_load_not_network
 Call @modmanager_network_load_pressed
-Jump @Label_catch_load_end
-
-:Label_catch_load_not_network
-Call @modmanager_load_pressed
-
-:Label_catch_load_end
 Return 0 0
 
 :modmanager_network_load_pressed
@@ -248,14 +238,17 @@ Jump @Label_modmanager_level_1_end
 :Label_level_1_last_selected_3
 PushString "Sub Script 1"
 PushString "sub_mod_script_1"
+PushS 1024
 Call @modmanager_addItem_script
 
 PushString "Sub Script 2"
 PushString "sub_mod_script_2"
+PushS 1024
 Call @modmanager_addItem_script
 
 PushString "Sub Script 3"
 PushString "sub_mod_script_3"
+PushS 1024
 Call @modmanager_addItem_script
 Return 0 0
 
@@ -354,9 +347,6 @@ StaticSet1 11
 
 Call @modmanager_script_config
 
-iPush_1
-getF 3
-JumpNE @Label_menu_set_end
 iPush_0
 StaticGet1 9
 JumpNE @Label_menu_set_end
@@ -364,6 +354,8 @@ PushString "Enter Script"
 PushString ""
 Push1 15
 Call @menu_addItem_keyboard
+PushS 1024
+Call @menu_add_data_2
 Call @menu_add_action
 
 :Label_menu_set_end
@@ -605,6 +597,9 @@ Return 1 0
 :modmanager_setup
 Function 1 0 4
 
+iPush_0
+Call @menu_set_open_state
+
 PushString "ModManager"
 StaticSet2 430
 
@@ -678,6 +673,23 @@ PushString "Edit With Keyboard"
 Call @menu_add_frontend
 
 :Label_menu_draw_frontend_hook_end
+Return 0 0
+
+:menu_hide
+Function 1 0 2
+Call @menu_reverse_game_state
+iPush_0
+StaticSet1 13
+pstatic1 12
+CallNative set_scaleform_movie_as_no_longer_needed 1 0
+iPush_0
+StaticSet1 27
+PushString "CommonMenu"
+CallNative set_streamed_texture_dict_as_no_longer_needed 1 0
+iPush_0
+Call @menu_set_open_state
+
+:menu_hide_end
 Return 0 0
 
 :menu_addItem
@@ -858,7 +870,7 @@ ArrayGet1 1
 Return 1 1
 
 :menu_addItem_float
-Function 1 2 4
+Function 1 3 5
 
 iPush_2
 StaticGet1 5
@@ -867,16 +879,21 @@ ArraySet1 1
 
 getF 0
 StaticGet1 5
-pstatic2 327
+pstatic2 276
 ArraySet1 1
 
 getF 1
+StaticGet1 5
+pstatic2 327
+ArraySet1 1
+
+getF 2
 StaticGet1 5
 pstatic1 174
 ArraySet1 1
 
 :Label_menu_addItem_float_end
-Return 2 0
+Return 3 0
 
 :menu_add_data_2
 Function 1 1 4
@@ -885,8 +902,6 @@ getF 0
 StaticGet1 5
 pstatic2 327
 ArraySet1 1
-
-:Label_menu_add_data_2_end
 Return 1 0
 
 :menu_get_current_data_2
@@ -966,26 +981,6 @@ pstatic1 174
 ArrayGet1 1
 Return 1 1
 
-:menu_addItem_gxt
-Function 1 1 4
-
-StaticGet1 5
-Add1 1
-StaticSet1 5
-
-getF 0
-StaticGet1 5
-pstatic1 72
-ArraySet1 1
-
-iPush_4
-StaticGet1 5
-pstatic1 123
-ArraySet1 1
-
-:Label_menu_addItem_gxt_end
-Return 1 0
-
 :menu_addItem_gxt_veh_hash
 Function 1 1 4
 
@@ -1061,6 +1056,35 @@ getF 3
 StaticSet1 29
 
 :Label_menu_addItem_number_keyboard_end
+Return 4 0
+
+:menu_addItem_float_keyboard
+Function 1 4 6
+
+Push1 12
+StaticGet1 5
+pstatic1 123
+ArraySet1 1
+
+getF 0
+StaticGet1 5
+pstatic2 276
+ArraySet1 1
+
+getF 1
+StaticGet1 5
+pstatic2 327
+ArraySet1 1
+
+getF 2
+StaticGet1 5
+pstatic1 174
+ArraySet1 1
+
+getF 3
+StaticSet1 29
+
+:Label_menu_addItem_float_keyboard_end
 Return 4 0
 
 :menu_get_current_keyboard
@@ -1177,7 +1201,7 @@ CallNative unk_0x27A244D8 1 0
 
 :Label_menu_add_frontend_gxt
 iPush_-1
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 CallNative unk_0x386CE0B8 0 0
 CallNative unk_0x02DBF2D7 0 0
 
@@ -1191,10 +1215,6 @@ iPush_0
 StaticSet1 4
 iPush_-1
 StaticSet1 5
-iPush_1
-Call @menu_set_open_state
-
-:Label_menu_setup_continue
 iPush_0
 StaticSet1 7
 iPush_0
@@ -1260,6 +1280,12 @@ CallNative hide_help_text_this_frame 0 0
 iPush_0
 CallNative set_cinematic_button_active 1 0
 
+CallNative player_ped_id 0 1
+iPush_1
+iPush_-1
+iPush_0
+CallNative set_ped_using_action_mode 4 0
+
 iPush_0
 iPush_0
 CallNative disable_control_action 2 0
@@ -1272,23 +1298,23 @@ Push1 73
 CallNative disable_control_action 2 0
 iPush_2
 Push1 176
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 iPush_2
 Push1 174
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 iPush_2
 Push1 175
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 
 iPush_0
 Push1 46
 CallNative disable_control_action 2 0
 iPush_2
 Push1 161
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 iPush_2
 Push1 162
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 
 iPush_2
 Push1 174
@@ -1322,10 +1348,10 @@ CallNative hide_hud_component_this_frame 1 0
 
 iPush_2
 Push1 163
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 iPush_2
 Push1 164
-CallNative unk_0x4E8E29E6 2 0
+CallNative set_input_exclusive 2 0
 
 iPush_0
 Push1 20
@@ -1712,6 +1738,12 @@ Return 1 1
 
 :menu_reverse_game_state
 Function 1 0 2
+CallNative player_ped_id 0 1
+iPush_0
+iPush_-1
+iPush_0
+CallNative set_ped_using_action_mode 4 0
+
 iPush_1
 CallNative set_cinematic_button_active 1 0
 Return 0 0
@@ -1863,6 +1895,10 @@ Jump @Label_catch_button_press_end
 
 :Label_catch_left_button_press
 iPush_1
+Call @menu_left_pressed
+JumpFalse @Label_catch_right_button_press
+
+iPush_1
 StaticGet1 4
 pstatic1 123
 ArrayGet1 1
@@ -1878,19 +1914,11 @@ CmpEq
 Or
 
 :Label_catch_left_button_press_or
-JumpFalse @Label_catch_button_press_end
+JumpFalse @Label_catch_button_press_left_float
 
-iPush_1
-Call @menu_left_pressed
-JumpFalse @Label_catch_button_press_5
-iPush_-1
-PushString "NAV_LEFT_RIGHT"
-PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
-CallNative play_sound_frontend 3 0
 StaticGet1 4
 pstatic2 327
 ArrayGet1 1
-
 StaticGet1 4
 pstatic2 276
 ArrayGet1 1
@@ -1915,23 +1943,98 @@ pstatic2 276
 ArraySet1 1
 
 :Label_catch_button_press_goto_7
-Jump @Label_catch_button_press_7
-
-:Label_catch_button_press_5
-iPush_1
-Call @menu_right_pressed
-JumpFalse @Label_catch_button_press_7
 iPush_-1
 PushString "NAV_LEFT_RIGHT"
 PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
 CallNative play_sound_frontend 3 0
+Jump @Label_catch_button_press_goto_7_1
+
+:Label_catch_button_press_left_float
+iPush_2
+StaticGet1 4
+pstatic1 123
+ArrayGet1 1
+CmpEq
+dup
+Not
+JumpFalse @Label_catch_left_button_float_press_or
+Push1 12
+StaticGet1 4
+pstatic1 123
+ArrayGet1 1
+CmpEq
+Or
+
+:Label_catch_left_button_float_press_or
+JumpFalse @Label_catch_button_press_left_float_2
+
+StaticGet1 4
+pstatic2 276
+ArrayGet1 1
+ItoF
+StaticGet1 4
+pstatic2 327
+ArrayGet1 1
+ItoF
+fCmpNe
+JumpFalse @Label_catch_button_press_left_float_1
+
+StaticGet1 4
+pstatic2 276
+ArrayGet1 1
+fPush 0.100
+fSub
+StaticGet1 4
+pstatic2 276
+ArraySet1 1
+Jump @Label_catch_button_press_goto_7_1
+
+:Label_catch_button_press_left_float_1
+StaticGet1 4
+pstatic1 174
+ArrayGet1 1
+StaticGet1 4
+pstatic2 276
+ArraySet1 1
+
+:Label_catch_button_press_left_float_2
+iPush_-1
+PushString "NAV_LEFT_RIGHT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+
+:Label_catch_button_press_goto_7_1
+Jump @Label_catch_button_press_end
+
+:Label_catch_right_button_press
+iPush_1
+Call @menu_right_pressed
+JumpFalse @Label_catch_button_press_end
+iPush_1
+StaticGet1 4
+pstatic1 123
+ArrayGet1 1
+CmpEq
+dup
+Not
+JumpFalse @Label_catch_right_button_press_or
+iPush_7
+StaticGet1 4
+pstatic1 123
+ArrayGet1 1
+CmpEq
+Or
+
+:Label_catch_right_button_press_or
+JumpFalse @Label_catch_button_press_right_float
+
 StaticGet1 4
 pstatic2 276
 ArrayGet1 1
 StaticGet1 4
 pstatic1 174
 ArrayGet1 1
-JumpEq @Label_catch_button_press_8
+JumpEq @Label_catch_button_press_right_6
 StaticGet1 4
 pstatic2 276
 ArrayGet1 1
@@ -1940,9 +2043,9 @@ StaticGet1 4
 pstatic2 276
 ArraySet1 1
 
-Jump @Label_catch_button_press_7
+Jump @Label_catch_button_press_right_goto_7
 
-:Label_catch_button_press_8
+:Label_catch_button_press_right_6
 StaticGet1 4
 pstatic2 327
 ArrayGet1 1
@@ -1951,8 +2054,67 @@ StaticGet1 4
 pstatic2 276
 ArraySet1 1
 
-:Label_catch_button_press_7
+:Label_catch_button_press_right_goto_7
+iPush_-1
+PushString "NAV_LEFT_RIGHT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
 Jump @Label_catch_button_press_end
+
+:Label_catch_button_press_right_float
+iPush_2
+StaticGet1 4
+pstatic1 123
+ArrayGet1 1
+CmpEq
+dup
+Not
+JumpFalse @Label_catch_right_button_float_press_or
+Push1 12
+StaticGet1 4
+pstatic1 123
+ArrayGet1 1
+CmpEq
+Or
+
+:Label_catch_right_button_float_press_or
+JumpFalse @Label_catch_button_press_right_float_2
+
+StaticGet1 4
+pstatic1 174
+ArrayGet1 1
+ItoF
+StaticGet1 4
+pstatic2 276
+ArrayGet1 1
+ItoF
+fCmpNe
+JumpFalse @Label_catch_button_press_right_float_1
+
+StaticGet1 4
+pstatic2 276
+ArrayGet1 1
+fPush 0.100
+fAdd
+StaticGet1 4
+pstatic2 276
+ArraySet1 1
+Jump @Label_catch_button_press_end
+
+:Label_catch_button_press_right_float_1
+StaticGet1 4
+pstatic2 327
+ArrayGet1 1
+
+StaticGet1 4
+pstatic2 276
+ArraySet1 1
+
+:Label_catch_button_press_right_float_2
+iPush_-1
+PushString "NAV_LEFT_RIGHT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
 
 :Label_catch_button_press_end
 StaticGet1 14
@@ -2127,6 +2289,9 @@ Return 0 0
 
 :menu_add_int_to_string
 Function 1 2 16
+PushString ""
+pFrame1 4
+StrCopy 16
 getF 1
 pFrame1 4
 StrCopy 16
@@ -2339,6 +2504,8 @@ getF 2
 JumpFalse @Label_menu_error_2_strings_1
 iPush_0
 StaticSet1 11
+iPush_0
+StaticSet1 45
 
 Call @menu_clean
 
@@ -2353,6 +2520,7 @@ ArrayGet1 1
 StaticSet1 4
 
 Call @menu_set
+Call @menu_set_frontend
 
 :Label_menu_error_2_strings_1
 PushString "TWOSTRINGS"
@@ -2375,6 +2543,8 @@ getF 2
 JumpFalse @Label_menu_error_2_strings_gxt_1
 iPush_0
 StaticSet1 11
+iPush_0
+StaticSet1 45
 
 Call @menu_clean
 
@@ -2389,6 +2559,7 @@ ArrayGet1 1
 StaticSet1 4
 
 Call @menu_set
+Call @menu_set_frontend
 
 :Label_menu_error_2_strings_gxt_1
 PushString "TWOSTRINGS"
@@ -2403,23 +2574,6 @@ CallNative unk_0x08F7AF78 2 1
 drop
 
 Return 3 0
-
-:menu_hide
-Function 1 0 2
-Call @menu_reverse_game_state
-iPush_0
-StaticSet1 13
-pstatic1 12
-CallNative set_scaleform_movie_as_no_longer_needed 1 0
-iPush_0
-StaticSet1 27
-PushString "CommonMenu"
-CallNative set_streamed_texture_dict_as_no_longer_needed 1 0
-iPush_0
-Call @menu_set_open_state
-
-:menu_hide_end
-Return 0 0
 
 :menu_frontend_clean
 Function 1 0 3
@@ -2869,7 +3023,7 @@ CallNative unk_0x27A244D8 1 0
 
 :Label_menu_draw_frontend_gxt
 iPush_-1
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 CallNative unk_0x386CE0B8 0 0
 CallNative unk_0x02DBF2D7 0 0
 
@@ -2993,7 +3147,7 @@ CallNative unk_0x6F8350CE 2 0
 Return 2 0
 
 :menu_draw
-Function 1 0 68
+Function 1 0 35
 
 iPush_0
 setF 3
@@ -3126,26 +3280,6 @@ getF 17
 setF 20
 
 :Label_draw_menu_2
-iPush_4
-getF 3
-pstatic1 123
-ArrayGet1 1
-JumpNE @Label_draw_menu_gxt_end
-getF 18
-getF 19
-getF 20
-fPush_1.0
-iPush_0
-Call @set_up_draw
-getF 3
-pstatic1 72
-ArrayGet1 1
-StaticGet1 3
-getF 5
-Call @draw_string_gxt
-Jump @Label_draw_menu_bool
-
-:Label_draw_menu_gxt_end
 iPush_5
 getF 3
 pstatic1 123
@@ -3165,7 +3299,6 @@ StaticGet1 3
 getF 5
 Call @draw_string_gxt
 Jump @Label_draw_menu_bool
-
 
 :Label_draw_menu_gxt_veh_hash_end
 iPush_6
@@ -3327,7 +3460,7 @@ CallNative unk_0x51E7A037 1 0
 getF 3
 pstatic2 276
 ArrayGet1 1
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 
 iPush_1
 CallNative unk_0xD12A643A 1 1
@@ -3444,7 +3577,44 @@ iPush_2
 getF 3
 pstatic1 123
 ArrayGet1 1
-JumpNE @Label_draw_menu_float_end
+CmpEq
+dup
+Not
+JumpFalse @Label_draw_menu_float_or
+Push1 12
+getF 3
+pstatic1 123
+ArrayGet1 1
+CmpEq
+Or
+
+:Label_draw_menu_float_or
+JumpFalse @Label_draw_menu_float_end
+
+getF 18
+getF 19
+getF 20
+StaticGet1 3
+fPush 0.203125
+fAdd
+iPush_1
+Call @set_up_draw
+
+PushString "NUMBER"
+CallNative unk_0x51E7A037 1 0
+
+getF 3
+pstatic2 276
+ArrayGet1 1
+iPush_4
+CallNative is_ped_hiding_near_indicatorlights 2 0
+
+iPush_1
+CallNative unk_0xD12A643A 1 1
+fPush 0.00859375
+fAdd
+setF 28
+
 getF 18
 getF 19
 getF 20
@@ -3454,11 +3624,100 @@ fAdd
 iPush_1
 Call @set_up_draw
 getF 3
-pstatic2 327
+pstatic2 276
 ArrayGet1 1
 fPush_0.0
 getF 5
 Call @draw_float
+
+StaticGet1 27
+JumpFalse @Label_draw_menu_float_end
+getF 3
+StaticGet1 4
+JumpNE @Label_draw_menu_float_end
+
+iPush_2
+pFrame1 24
+pFrame1 25
+pFrame1 26
+pFrame1 27
+CallNative get_hud_colour 5 0
+
+PushString "CommonMenu"
+PushString "arrowleft"
+CallNative get_texture_resolution 2 3
+iPush_3
+pFrame1 29
+FromStack
+
+PushString "CommonMenu"
+PushString "arrowleft"
+fPush 0.05
+getF 28
+fSub
+fPush 0.425
+fPush 0.5
+fMult
+fAdd
+getF 5
+fPush 0.00277776
+fSub
+StaticGet1 22
+fPush 0.5
+fMult
+fAdd
+getF 29
+getF 22
+ItoF
+fDiv
+pFrame1 29
+GetImmediate1 1
+getF 23
+ItoF
+fDiv
+fPush_0.0
+getF 24
+getF 25
+getF 26
+getF 27
+CallNative draw_sprite 11 0
+
+PushString "CommonMenu"
+PushString "arrowright"
+CallNative get_texture_resolution 2 3
+iPush_3
+pFrame1 29
+FromStack
+
+PushString "CommonMenu"
+PushString "arrowright"
+fPush 0.05
+fPush 0.425
+fPush 0.5
+fMult
+fAdd
+getF 5
+fPush 0.00277776
+fSub
+StaticGet1 22
+fPush 0.5
+fMult
+fAdd
+getF 29
+getF 22
+ItoF
+fDiv
+pFrame1 29
+GetImmediate1 1
+getF 23
+ItoF
+fDiv
+fPush_0.0
+getF 24
+getF 25
+getF 26
+getF 27
+CallNative draw_sprite 11 0
 
 :Label_draw_menu_float_end
 iPush_3
@@ -3567,9 +3826,9 @@ Function 1 4 4
 PushString "CM_ITEM_COUNT"
 CallNative unk_0x3E35563E 1 0
 getF 0
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 getF 1
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 getF 2
 getF 3
 CallNative unk_0x6F8350CE 2 0
@@ -3580,7 +3839,7 @@ Function 1 3 3
 PushString "NUMBER"
 CallNative unk_0x3E35563E 1 0
 getF 0
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 getF 1
 getF 2
 CallNative unk_0x6F8350CE 2 0
@@ -3592,7 +3851,7 @@ PushString "NUMBER"
 CallNative unk_0x3E35563E 1 0
 getF 0
 iPush_4
-CallNative is_ped_hiding_near_indicatorlights 2 0
+CallNative add_text_component_float 2 0
 getF 1
 getF 2
 CallNative unk_0x6F8350CE 2 0
@@ -3600,13 +3859,27 @@ Return 3 0
 
 :draw_string
 Function 1 3 3
+
+getF 0
+CallNative does_text_label_exist 1 1
+JumpFalse @Label_draw_string_1
+getF 0
+CallNative unk_0x3E35563E 1 0
+Jump @Label_draw_string_2
+
+:Label_draw_string_1
 PushString "STRING"
 CallNative unk_0x3E35563E 1 0
+
 getF 0
 CallNative unk_0x27A244D8 1 0
+
+:Label_draw_string_2
 getF 1
 getF 2
 CallNative unk_0x6F8350CE 2 0
+
+:Label_draw_string_end
 Return 3 0
 
 :draw_string_gxt
@@ -3623,7 +3896,7 @@ Function 1 4 6
 getF 0
 CallNative unk_0x3E35563E 1 0
 getF 1
-CallNative unk_0xFE272A57 1 0
+CallNative add_text_component_integer 1 0
 getF 2
 getF 3
 CallNative unk_0x6F8350CE 2 0
