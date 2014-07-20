@@ -347,6 +347,8 @@ StaticSet1 11
 
 Call @modmanager_script_config
 
+getF 3
+JumpFalse @Label_menu_set_end
 iPush_0
 StaticGet1 9
 JumpNE @Label_menu_set_end
