@@ -222,6 +222,16 @@ PushString "3s_trainer"
 PushS 1024
 Call @modmanager_addItem_script
 
+PushString "Custom Camera"
+PushString "custom_cam"
+PushS 1024
+Call @modmanager_addItem_script
+
+PushString "UFO TEST"
+PushString "ufo_test"
+PushS 1024
+Call @modmanager_addItem_script
+
 PushString "North Yankton"
 PushString "north_yankton"
 PushS 512
