@@ -1987,6 +1987,10 @@ pstatic2 276
 ArraySet1 1
 
 :Label_catch_button_press_goto_7
+iPush_-1
+PushString "NAV_LEFT_RIGHT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
 Jump @Label_catch_button_press_goto_7_1
 
 :Label_catch_button_press_left_float
@@ -2058,7 +2062,7 @@ fSub
 StaticGet1 4
 pstatic2 276
 ArraySet1 1
-Jump @Label_catch_button_press_goto_7_1
+Jump @Label_catch_button_press_goto_7_2
 
 :Label_catch_button_press_left_float_1
 StaticGet1 4
@@ -2068,11 +2072,13 @@ StaticGet1 4
 pstatic2 276
 ArraySet1 1
 
-:Label_catch_button_press_goto_7_1
+:Label_catch_button_press_goto_7_2
 iPush_-1
 PushString "NAV_LEFT_RIGHT"
 PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
 CallNative play_sound_frontend 3 0
+
+:Label_catch_button_press_goto_7_1
 Jump @Label_catch_button_press_end
 
 :Label_catch_right_button_press
@@ -2146,7 +2152,11 @@ pstatic2 276
 ArraySet1 1
 
 :Label_catch_button_press_right_goto_7
-Jump @Label_catch_button_press_right_float_2
+iPush_-1
+PushString "NAV_LEFT_RIGHT"
+PushString "HUD_FRONTEND_DEFAULT_SOUNDSET"
+CallNative play_sound_frontend 3 0
+Jump @Label_catch_button_press_end
 
 :Label_catch_button_press_right_float
 iPush_2
@@ -2165,7 +2175,7 @@ CmpEq
 Or
 
 :Label_catch_right_button_float_press_or
-JumpFalse @Label_catch_button_press_right_float_2
+JumpFalse @Label_catch_button_press_end
 
 StaticGet1 4
 pstatic2 276
