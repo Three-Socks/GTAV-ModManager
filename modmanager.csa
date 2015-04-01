@@ -2152,15 +2152,15 @@ Return 0 0
 :menu_modify_game_state
 Function 1 0 2
 
-pglobal2 13242
-GetImmediate2 6183
+pglobal2 13245
+GetImmediate2 6663
 Not
 JumpFalse @Label_menu_modify_game_state_1
 Call @menu_modify_game_state_globals
 
 :Label_menu_modify_game_state_1
 CallNative get_game_timer 0 1
-pglobal2 13242
+pglobal2 13245
 SetImmediate2 4621
 
 CallNative hide_help_text_this_frame 0 0
@@ -2367,7 +2367,7 @@ Return 0 0
 
 :menu_modify_game_state_globals
 Function 1 0 2
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 iPush_1
 CmpEq
@@ -2380,7 +2380,7 @@ iPush_0
 Call @Label_menu_set_mobile_globals_297
 
 :menu_modify_game_state_globals_1
-pglobal2 1687
+pglobal2 1688
 iPush_2
 CallNative set_bit 2 0
 
@@ -2389,21 +2389,21 @@ Return 0 0
 
 :Label_menu_set_mobile_globals_297
 Function 38 1 3
-globalget2 10588
+globalget2 10589
 JumpFalse @Label_menu_set_mobile_globals_298
 iPush_0
 iPush_0
 Call @menu_set_mobile_position_299
 
 :Label_menu_set_mobile_globals_298
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 Push1 10
 CmpEq
 dup
 Not
 JumpFalse @Label_menu_set_mobile_globals_300
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 Push1 9
 CmpEq
@@ -2411,7 +2411,7 @@ Or
 
 :Label_menu_set_mobile_globals_300
 JumpFalse @Label_menu_set_mobile_globals_301
-pglobal2 1687
+pglobal2 1688
 Push1 16
 CallNative set_bit 2 0
 
@@ -2424,17 +2424,17 @@ drop
 
 :Label_menu_set_mobile_globals_302
 iPush_5
-globalset2 11728
+globalset2 11729
 getF 0
 iPush_1
 JumpNE @Label_menu_set_mobile_globals_303
-pglobal2 1686
+pglobal2 1687
 Push1 30
 CallNative set_bit 2 0
 Jump @Label_menu_set_mobile_globals_304
 
 :Label_menu_set_mobile_globals_303
-pglobal2 1686
+pglobal2 1687
 Push1 30
 CallNative clear_bit 2 0
 
@@ -2443,7 +2443,7 @@ Call @menu_set_mobile_globals_2_305
 Not
 JumpFalse @Label_menu_set_mobile_globals_306
 iPush_3
-pglobal2 10433
+pglobal2 10434
 SetImmediate1 1
 
 :Label_menu_set_mobile_globals_306
@@ -2451,14 +2451,14 @@ Return 1 0
 
 :menu_set_mobile_globals_2_305
 Function 1 0 2
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 iPush_1
 CmpEq
 dup
 Not
 JumpFalse @Label_menu_set_mobile_globals_2_307
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 iPush_0
 CmpEq
@@ -2481,23 +2481,23 @@ iPush_0
 Call @menu_get_mobile_globals
 JumpFalse @Label_menu_set_mobile_position_310
 iPush_1
-globalset2 10588
+globalset2 10589
 getF 1
 JumpFalse @Label_menu_set_mobile_position_311
-pglobal2 10370
+pglobal2 10371
 CallNative get_mobile_phone_position 1 0
 
 :Label_menu_set_mobile_position_311
 iPush_3
-globalget2 10378
-pglobal2 10379
+globalget2 10379
+pglobal2 10380
 ArrayGetP1 3
 ToStack
 iPush_3
-pglobal2 10361
+pglobal2 10362
 FromStack
 iPush_3
-pglobal2 10361
+pglobal2 10362
 ToStack
 CallNative set_mobile_phone_position 3 0
 
@@ -2505,30 +2505,30 @@ CallNative set_mobile_phone_position 3 0
 Jump @Label_menu_set_mobile_position_312
 
 :Label_menu_set_mobile_position_309
-globalget2 10588
+globalget2 10589
 iPush_1
 JumpNE @Label_menu_set_mobile_position_312
 iPush_0
-globalset2 10588
+globalset2 10589
 iPush_3
-globalget2 10378
-pglobal2 10386
+globalget2 10379
+pglobal2 10387
 ArrayGetP1 3
 ToStack
 iPush_3
-pglobal2 10361
+pglobal2 10362
 FromStack
 getF 1
 JumpFalse @Label_menu_set_mobile_position_313
 iPush_3
-pglobal2 10370
+pglobal2 10371
 ToStack
 CallNative set_mobile_phone_position 3 0
 Jump @Label_menu_set_mobile_position_312
 
 :Label_menu_set_mobile_position_313
 iPush_3
-pglobal2 10361
+pglobal2 10362
 ToStack
 CallNative set_mobile_phone_position 3 0
 
@@ -2540,11 +2540,11 @@ Function 1 1 3
 getF 0
 iPush_1
 JumpNE @Label_menu_get_mobile_globals_314
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 iPush_3
 JumpLE @Label_menu_get_mobile_globals_315
-globalget2 1686
+globalget2 1687
 Push1 14
 CallNative is_bit_set 2 1
 JumpFalse @Label_menu_get_mobile_globals_316
@@ -2568,7 +2568,7 @@ iPush_1
 Return 1 1
 
 :Label_menu_get_mobile_globals_319
-pglobal2 10433
+pglobal2 10434
 GetImmediate1 1
 iPush_3
 JumpLE @Label_menu_get_mobile_globals_320
