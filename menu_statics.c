@@ -1,5 +1,5 @@
 /*
-	Statics 1-327 Menu reserved
+	Statics 1-499 Menu reserved
 */
 
 // (float) menu_x
@@ -84,6 +84,9 @@ Static_28
 // (uint) menu_keyboard_custom_length
 Static_29
 
+// (uint) menu_catch_button_id
+Static_30
+
 // (bool) frontend_items_set
 Static_45
 
@@ -102,7 +105,7 @@ Static_61[* 10]
 // (char) menu_items_name (50)
 Static_72[* 50]
 
-// (uint) menu_items_type (1 = number, 2 = float, 3 = bool, 4 = GXT, 5 = vehicle hash, 6 = keyboard string, 7 = keyboard number, 8 = add number, 9 = gxt add number, 10 = gxt add number2, 11 = gxt number) (50)
+// (uint) menu_items_type (1 = number, 2 = float, 3 = bool, 4 = GXT, 5 = vehicle hash, 6 = keyboard string, 7 = keyboard number, 8 = add number, 9 = gxt add number, 10 = gxt add number2, 11 = gxt number, 12 = keyboard float, 13 = number format, 14 = keyboard number format) (50)
 Static_123[* 50]
 
 // (int) menu_items_extra_val (50)
@@ -117,16 +120,94 @@ Static_276[* 50]
 // (float) menu_items_float_val (50)
 Static_327[* 50]
 
-// ModManager
+// menu_just_opened
+Static_378
 
-// (bool) modmanager_item_menu (50)
-Static_378[* 50]
+// menu_stored_data
+Static_379[* 50]
 
-// (bool) modmanager_sec_var
-Static_429
-
-// (char) modmanager_sec_var_string1 (ModManager)
+// (char) custom bool string off/no
 Static_430
 
-// (char) modmanager_script_loaded_time
-Static_434
+// (char) custom bool string on/yes
+Static_431
+
+// (uint) custom float dp
+Static_432
+
+// Fonts (0-7)
+Static_433 = 0;
+
+// Menu Position (0 = Left, 1 = Right)
+Static_434 = 0;
+
+// Menu Sound Effects (0 = Off, 1 = On)
+Static_435 = 1;
+
+// Menu Header & Scroll Arrows Window
+Static_436 = 0; // R
+Static_437 = 0; // G
+Static_438 = 0; // B
+
+// Menu Items Window
+Static_439 = 0; // R
+Static_440 = 0; // G
+Static_441 = 0; // B
+
+// Menu Highlight Bar
+Static_442 = 240; // R
+Static_443 = 240; // G
+Static_444 = 240; // B
+
+// Menu Header Text & Scroll Arrows
+Static_445 = 240; // R
+Static_446 = 240; // G
+Static_447 = 240; // B
+
+// Menu Highlighted Text
+Static_448 = 0; // R
+Static_449 = 0; // G
+Static_450 = 0; // B
+
+// Menu Non Highlighted Items Text
+Static_451 = 240; // R
+Static_452 = 240; // G
+Static_453 = 240; // B
+
+// ModManager
+
+// modmanager_script_loaded_time
+Static_500
+
+// modmanager_custom_script1
+Static_501[* 16]
+
+// modmanager_custom_script2
+Static_517[* 16]
+
+// modmanager_custom_script3
+Static_533[* 16]
+
+// modmanager_custom_script4
+Static_549[* 16]
+
+// modmanager_custom_script5
+Static_565[* 16]
+
+// modmanager_custom_script6
+Static_581[* 16]
+
+// modmanager_custom_script7
+Static_597[* 16]
+
+// modmanager_custom_script8
+Static_613[* 16]
+
+// modmanager_custom_script9
+Static_629[* 16]
+
+// modmanager_custom_script10
+Static_645[* 16]
+
+// modmanager_custom_script_count
+Static_661
